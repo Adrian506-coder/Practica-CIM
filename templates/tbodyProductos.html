@@ -1,0 +1,9 @@
+{% for producto in productos %}
+<tr>
+    <td>{{ producto.Id_Producto }}</td>
+    <td>{{ producto.Nombre_Producto }}</td>
+    <td>{{ producto.Precio }}</td>
+    <td>{{ producto.Existencias }}</td>
+    <td><button class="btn btn-info btn-ingredientes" data-id="{{ producto.Id_Producto }}">Ver ingredientes...</button></td>
+</tr>
+{% endfor %}

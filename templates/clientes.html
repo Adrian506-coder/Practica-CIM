@@ -1,0 +1,38 @@
+<form id="frmCliente" method="post">
+    <div class="mb-1">
+        <label>Nombre</label>
+        <input type="text" class="form-control" id="txtNombreCliente" name="nombreCliente">
+    </div>
+    <div class="mb-1">
+        <label>Telefono</label>
+        <input type="text" class="form-control" id="txtTelefono" name="telefono">
+    </div>
+    <div class="mb-1">
+        <label>Correo Electronico</label>
+        <input type="text" class="form-control" id="txtCorreoElectronico" name="correoElectronico">
+    </div>
+    <input type="hidden" id="idCliente" name="idCliente">
+    <div class="mb-1 text-end">
+        <button type="submit" id="btnGuardar" class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" id="txtBuscarCliente" placeholder="Buscar cliente por nombre, teléfono o correo">
+    <button class="btn btn-secondary" id="btnBuscarCliente" type="button">Buscar</button>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Correo Electronico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyClientes"></tbody>
+    </table>
+</div>

@@ -1,0 +1,31 @@
+<form id="frmProducto" method="post">
+    <div class="mb-1">
+        <label>Nombre</label>
+        <input type="text" class="form-control" id="txtNombre" name="txtNombre">
+    </div>
+    <div class="mb-1">
+        <label>Precio</label>
+        <input type="text" class="form-control" id="txtPrecio" name="txtPrecio">
+    </div>
+    <div class="mb-1">
+        <label>Existencias</label>
+        <input type="text" class="form-control" id="txtExistencias" name="txtExistencias">
+    </div>
+    <div class="mb-1 text-end">
+        <button class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Existencias</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbodyProductos"></tbody>
+    </table>
+</div>

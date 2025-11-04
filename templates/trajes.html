@@ -1,0 +1,38 @@
+<form id="frmTrajes" ng-submit="guardarTraje()" method="post">
+    <div class="mb-1">
+        <input type="hidden" id="txtIdTraje" name="txtIdTraje" ng-model="txtIdTraje">
+    </div>
+    <div class="mb-1">
+        <label>Nombre</label>
+        <input type="text" class="form-control" id="txtNombre" name="txtNombre" ng-model="txtNombre">
+    </div>
+    <div class="mb-1">
+        <label>Descripcion</label>
+        <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" ng-model="txtDescripcion">
+    </div>
+    <div class="mb-1 text-end">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</form>
+
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" id="txtBuscarTrajes" placeholder="Buscar Traje por nombre o Descripcion">
+    <button class="btn btn-secondary" id="btnBuscarTrajes" type="button">Buscar</button>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbodyTrajes">
+            
+        </tbody>
+    </table>
+</div>

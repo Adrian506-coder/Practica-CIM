@@ -1,0 +1,10 @@
+{% for cliente in clientes %}
+<tr>
+    <td>{{ cliente.idCliente }}</td>
+    <td>{{ cliente.nombreCliente }}</td>
+    <td>{{ cliente.telefono }}</td>
+    <td>{{ cliente.correoElectronico }}</td>
+    <td><button class="btn btn-sm btn-danger btn-eliminar" data-id="{{ cliente.idCliente }}">Eliminar</button>
+    <button class="btn btn-sm btn-warning btn-editar" data-id="{{ cliente.idCliente }}" data-nombre="{{ cliente.nombreCliente }}" data-telefono="{{ cliente.telefono }}" data-correo="{{ cliente.correoElectronico }}">Editar</button></td>
+</tr>
+{% endfor %}
