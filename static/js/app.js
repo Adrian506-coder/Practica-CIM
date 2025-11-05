@@ -618,6 +618,13 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
         console.log("Abarrotes Factory", categoriaAbarrotes.getInfo())
         $scope.categoriaAbarrotes = categoriaAbarrotes
     })
+    $.get("sucursal/categorias", {
+        categoria: "Mini_super"
+    },function (mini_super){
+        const categoriaMini_super = CategoriaFactory.create("Mini_super",minisuper)
+        console.log("Mini super Factory", categoriaMini_super.getInfo())
+        $scope.categoriaMini_super = categoriaMini_super
+    })
     
     Pusher.logToConsole = true
 
@@ -722,6 +729,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
