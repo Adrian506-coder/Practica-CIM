@@ -27,7 +27,7 @@ con = mysql.connector.connect(
 )
 
 # TRAJES
-def pusherProductos():
+def pusherSucursal():
     import pusher
     
     pusher_client = pusher.Pusher(
@@ -38,7 +38,7 @@ def pusherProductos():
     ssl=True
     )
     
-    pusher_client.trigger("canalTrajes", "eventoTrajes", {"message": "Hola Mundo!"})
+    pusher_client.trigger("canalsucursal", "eventosucursal", {"message": "Hola Mundo!"})
 
 
 def login(fun):
@@ -133,25 +133,25 @@ def preferencias():
     }))
 
 # TRAJES
-@app.route("/trajes")
+@app.route("/sucursal")
 @login
-def trajes():
-    return render_template("trajes.html")
+def sucursal():
+    return render_template("sucursal.html")
 
-@app.route("/tbodyTrajes")
+@app.route("/tbodysucursal")
 @login
-def tbodyTrajes():
+def tbodysucursal():
     if not con.is_connected():
         con.reconnect()
     cursor = con.cursor(dictionary=True)
     sql    = """
-    SELECT IdTraje,
-           nombreTraje,
-           descripcion
+    SELECT Id_sucursal,
+           Nombre,
+           Direccion
 
-    FROM trajes
+    FROM sucursal
 
-    ORDER BY IdTraje DESC
+    ORDER BY Id_sucursal DESC
 
     LIMIT 10 OFFSET 0
     """
@@ -159,110 +159,100 @@ def tbodyTrajes():
     cursor.execute(sql)
     registros = cursor.fetchall()
 
-    # Si manejas fechas y horas
-    """
-    for registro in registros:
-        fecha_hora = registro["Fecha_Hora"]
+    return render_template("tbodysucursal.html", sucursal=registros)
 
-        registro["Fecha_Hora"] = fecha_hora.strftime("%Y-%m-%d %H:%M:%S")
-        registro["Fecha"]      = fecha_hora.strftime("%d/%m/%Y")
-        registro["Hora"]       = fecha_hora.strftime("%H:%M:%S")
-    """
+# @app.route("/sucursal/guardar", methods=["POST", "GET"])
+# @login
+# def guardarsucursal():
+#     if not con.is_connected():
+#         con.reconnect()
 
-    return render_template("tbodyTrajes.html", trajes=registros)
-
-@app.route("/trajes/guardar", methods=["POST", "GET"])
-@login
-def guardarTraje():
-    if not con.is_connected():
-        con.reconnect()
-
-    if request.method == "POST":
-        data = request.get_json(silent=True) or request.form
-        id_traje = data.get("IdTraje")
-        nombre = data.get("txtNombre")
-        descripcion = data.get("txtDescripcion")
-    else: 
-        nombre = request.args.get("nombre")
-        descripcion = request.args.get("descripcion")
-    if not nombre or not descripcion:
-        return jsonify({"error": "Faltan parámetros"}), 400
+#     if request.method == "POST":
+#         data = request.get_json(silent=True) or request.form
+#         id_traje = data.get("IdTraje")
+#         nombre = data.get("txtNombre")
+#         descripcion = data.get("txtDescripcion")
+#     else: 
+#         nombre = request.args.get("nombre")
+#         descripcion = request.args.get("descripcion")
+#     if not nombre or not descripcion:
+#         return jsonify({"error": "Faltan parámetros"}), 400
         
-    cursor = con.cursor()
+#     cursor = con.cursor()
     
-    if id_traje:
-        sql = """
-        UPDATE  trajes
-            SET nombreTraje = %s,
-            descripcion = %s
-        WHERE IdTraje = %s
-        """
-        cursor.execute(sql, (nombre, descripcion, id_traje))
+#     if id_traje:
+#         sql = """
+#         UPDATE  trajes
+#             SET nombreTraje = %s,
+#             descripcion = %s
+#         WHERE IdTraje = %s
+#         """
+#         cursor.execute(sql, (nombre, descripcion, id_traje))
         
-        pusherProductos()
-    else: 
-        sql = """
-        INSERT INTO trajes (nombreTraje, descripcion)
-        VALUES (%s, %s)
-        """
-        cursor.execute(sql, (nombre, descripcion))
+#         pusherProductos()
+#     else: 
+#         sql = """
+#         INSERT INTO trajes (nombreTraje, descripcion)
+#         VALUES (%s, %s)
+#         """
+#         cursor.execute(sql, (nombre, descripcion))
 
-        pusherProductos()
+#         pusherProductos()
 
-    con.commit()
-    con.close()
-    return make_response(jsonify({"mensaje": "Traje guardado correctamente"}))
+#     con.commit()
+#     con.close()
+#     return make_response(jsonify({"mensaje": "Traje guardado correctamente"}))
 
-@app.route("/trajes/eliminar", methods=["POST", "GET"])
-@login
-def eliminartraje():
-    if not con.is_connected():
-        con.reconnect()
+# @app.route("/trajes/eliminar", methods=["POST", "GET"])
+# @login
+# def eliminartraje():
+#     if not con.is_connected():
+#         con.reconnect()
 
-    if request.method == "POST":
-        IdTraje = request.form.get("id")
-    else:
-        IdTraje = request.args.get("id")
+#     if request.method == "POST":
+#         IdTraje = request.form.get("id")
+#     else:
+#         IdTraje = request.args.get("id")
 
-    IdTraje = int(IdTraje)
+#     IdTraje = int(IdTraje)
     
-    cursor = con.cursor()
-    sql = "DELETE FROM trajes WHERE IdTraje = %s"
-    val = (IdTraje,)
+#     cursor = con.cursor()
+#     sql = "DELETE FROM trajes WHERE IdTraje = %s"
+#     val = (IdTraje,)
 
-    cursor.execute(sql, val)
-    con.commit()
-    con.close()
+#     cursor.execute(sql, val)
+#     con.commit()
+#     con.close()
 
-    pusherProductos()
+#     pusherProductos()
 
-    return make_response(jsonify({"status": "ok"}))
+#     return make_response(jsonify({"status": "ok"}))
 
-@app.route("/trajes/<int:id>")
+# @app.route("/trajes/<int:id>")
+# @login
+# def editarTrajes(id):
+#     if not con.is_connected():
+#         con.reconnect()
+
+#     cursor = con.cursor(dictionary=True)
+#     sql    = """
+#     SELECT IdTraje, nombreTraje, descripcion
+
+#     FROM trajes
+
+#     WHERE IdTraje = %s
+#     """
+#     val    = (id,)
+
+#     cursor.execute(sql, val)
+#     registros = cursor.fetchall()
+#     con.close()
+
+#     return make_response(jsonify(registros))
+
+@app.route("/sucursal/buscar", methods=["GET"])
 @login
-def editarTrajes(id):
-    if not con.is_connected():
-        con.reconnect()
-
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT IdTraje, nombreTraje, descripcion
-
-    FROM trajes
-
-    WHERE IdTraje = %s
-    """
-    val    = (id,)
-
-    cursor.execute(sql, val)
-    registros = cursor.fetchall()
-    con.close()
-
-    return make_response(jsonify(registros))
-
-@app.route("/trajes/buscar", methods=["GET"])
-@login
-def buscarTrajes():
+def buscarsucursal():
     if not con.is_connected():
         con.reconnect()
 
@@ -272,16 +262,16 @@ def buscarTrajes():
     
     cursor = con.cursor(dictionary=True)
     sql    = """
-    SELECT IdTraje,
-           nombreTraje,
-           descripcion
+    SELECT Id_sucursal,
+           Nombre,
+           Direccion
 
-    FROM trajes
+    FROM sucursal
 
-    WHERE nombreTraje LIKE %s
-    OR    descripcion          LIKE %s
+    WHERE Nombre LIKE %s
+    OR    Descripcion          LIKE %s
 
-    ORDER BY IdTraje DESC
+    ORDER BY Id_sucursal DESC
 
     LIMIT 10 OFFSET 0
     """
@@ -299,3 +289,4 @@ def buscarTrajes():
         con.close()
 
     return make_response(jsonify(registros))
+
