@@ -66,7 +66,7 @@ app.config(function ($routeProvider, $locationProvider) {
         redirectTo: "/"
     })
 })
-app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, $timeout) {
+app.run(["$rootScope", "$location", "$timeout", "SesionService", function($rootScope, $location, $timeout, SesionService) {
     $rootScope.slide             = ""
     $rootScope.spinnerGrow       = false
     $rootScope.sendingRequest    = false
@@ -99,7 +99,8 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
         preferencias = {}
     }
     $rootScope.preferencias = preferencias
-
+    SesionService.setTipo(preferencias.tipo)
+    SesionService.setUsr(preferencias.usr)
 
     $rootScope.$on("$routeChangeSuccess", function (event, current, previous) {
         $rootScope.spinnerGrow = false
@@ -554,6 +555,27 @@ app.controller("loginCtrl", function ($scope, $http, $rootScope) {
     })
 })
 
+app.service("SesionService", function () {
+    this.tipo = null
+    this.usr = null
+
+    this.setTipo = function (tipo) {
+        this.tipo = tipo
+    }
+
+    this.getTipo = function () {
+        return this.tipo
+    }
+
+    this.setUsr = function (usr) {
+        this.usr = usr
+    }
+
+    this.getUsr = function () {
+        return this.usr
+    }
+});
+
 app.factory("CategoriaFactory", function () {
     function Categoria(titulo, sucursales) {
         this.titulo = titulo
@@ -575,7 +597,7 @@ app.factory("CategoriaFactory", function () {
 })
 
 
-app.controller("sucursalCtrl", function ($scope, $http, $rootScope, CategoriaFactory) {
+app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory) {
     function buscarsucursal() {
         $.get("/tbodysucursal", function (trsHTML) {
             $("#tbodySucursal").html(trsHTML)
@@ -585,6 +607,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, CategoriaFac
     buscarsucursal()
 
     let preferencias = $rootScope.preferencias
+    $scope.SesionService = SesionService
 
     $.get("sucursal/categorias", {
         categoria: "Abarrotes"
@@ -697,6 +720,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
