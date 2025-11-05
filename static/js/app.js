@@ -607,16 +607,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     buscarsucursal()
 
     let preferencias = $rootScope.preferencias || {}
-    $scope.SesionService = SesionService
-
-    SesionService.setTipo(preferencias.tipo)
-    SesionService.setUsr(preferencias.usr)
-
-    // 🔹 Refresca el HTML de Angular
-    $scope.$applyAsync();
-
-    // 🔹 Debug (para verificar)
-    console.log("✅ Preferencias cargadas en sucursalCtrl:", SesionService.getUsr(), SesionService.getTipo());
+    $rootScope.SesionService = SesionService
     
     $.get("sucursal/categorias", {
         categoria: "Abarrotes"
@@ -729,6 +720,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
