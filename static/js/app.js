@@ -554,12 +554,57 @@ app.controller("loginCtrl", function ($scope, $http, $rootScope) {
     })
 })
 
-app.controller("sucursalCtrl", function ($scope, $http) {
+app.factory("CategoriaFactory", function () {
+    function Categoria(titulo, sucursales) {
+        this.titulo = titulo
+        this.sucursales = sucursales
+    }
+
+    Categoria.prototype.getInfo = function () {
+        return {
+            titulo: this.titulo,
+            sucursales: this.sucursales
+        }
+    }
+
+    return {
+        create: function (titulo, sucursales) {
+            return new Categoria(titulo, sucursales)
+        }
+    }
+})
+
+
+app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SessionService, CategoriaFactory) {
     function buscarsucursal() {
         $.get("/tbodysucursal", function (trsHTML) {
             $("#tbodySucursal").html(trsHTML)
         })
     }
+
+    buscarsucursal()
+
+    let preferencias = $rootScope.preferencias
+    $scope.SesionService = SesionService
+
+    $.get("sucursal/categorias", {
+        categoria: "abarrotes"
+    },function (galletas){
+        const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",Abarrotes)
+        console.log("Abarrotes Factory", CategoriaAbarrotes.getInfo())
+    })
+    
+    Pusher.logToConsole = true
+
+    var pusher = new Pusher("b51b00ad61c8006b2e6f", {
+      cluster: "us2"
+    })
+
+    var channel = pusher.subscribe("canalsucursal")
+    channel.bind("eventosucursal", function(data) {
+        buscarsucursal()
+    })
+
     // function editarTraje(id) {
     //     fetch(`/trajes/${id}`)
     //         .then(response => response.json())
@@ -578,19 +623,6 @@ app.controller("sucursalCtrl", function ($scope, $http) {
     //             }
     //         });
     // }
-
-    buscarsucursal()
-    
-    Pusher.logToConsole = true
-
-    var pusher = new Pusher("b51b00ad61c8006b2e6f", {
-      cluster: "us2"
-    })
-
-    var channel = pusher.subscribe("canalsucursal")
-    channel.bind("eventosucursal", function(data) {
-        buscarsucursal()
-    })
     
     // $(document).on("click", "#tbodyTrajes .btn-modificar", function(){
     //     const id = $(this).data("id");
@@ -665,6 +697,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
