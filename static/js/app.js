@@ -613,6 +613,18 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     let preferencias = $rootScope.preferencias
     $scope.SesionService = SesionService
 
+    $.get("/preferencias", function (data) {
+
+        SesionService.setUsr(data.usr);
+        SesionService.setTipo(data.tipo);
+
+        console.log("🟢 Sesión cargada desde Flask:", data);
+
+        $scope.$applyAsync();
+    }).fail(function (xhr) {
+        console.error("⚠️ No hay sesión iniciada:", xhr.responseText);
+    });
+    
     $.get("sucursal/categorias", {
         categoria: "Abarrotes"
     },function (abarrotes){
@@ -724,6 +736,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
