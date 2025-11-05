@@ -132,7 +132,7 @@ def preferencias():
         "tipo": session.get("login-tipo", 2)
     }))
 
-# TRAJES
+# sucursal
 @app.route("/sucursal")
 @login
 def sucursal():
@@ -160,6 +160,80 @@ def tbodysucursal():
     registros = cursor.fetchall()
 
     return render_template("tbodysucursal.html", sucursal=registros)
+
+@app.route("/sucursal/buscar", methods=["GET"])
+@login
+def buscarsucursal():
+    if not con.is_connected():
+        con.reconnect()
+
+    args     = request.args
+    busqueda = args["busqueda"]
+    busqueda = f"%{busqueda}%"
+    
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT Id_sucursal,
+           Nombre,
+           Direccion
+
+    FROM sucursal
+
+    WHERE Nombre LIKE %s
+    OR    Direccion          LIKE %s
+
+    ORDER BY Id_sucursal DESC
+
+    LIMIT 10 OFFSET 0
+    """
+    val    = (busqueda, busqueda)
+
+    try:
+        cursor.execute(sql, val)
+        registros = cursor.fetchall()
+
+    except mysql.connector.errors.ProgrammingError as error:
+        print(f"Ocurrió un error de programación en MySQL: {error}")
+        registros = []
+
+    finally:
+        con.close()
+
+    return make_response(jsonify(registros))
+
+@app.route("/sucursal/categorias", methods=["GET"])
+@login
+def sucursalcategoria():
+    if not con.is_connected():
+        con.reconnect()
+
+    args     = request.args
+    categoria = args["categoria"]
+    
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT Nombre
+    FROM sucursal
+
+    WHERE categoria = %s
+    ORDER BY Nombre ASC
+
+    LIMIT 10 OFFSET 0
+    """
+    val    = (categoria, )
+
+    try:
+        cursor.execute(sql, val)
+        registros = cursor.fetchall()
+
+    except mysql.connector.errors.ProgrammingError as error:
+        print(f"Ocurrió un error de programación en MySQL: {error}")
+        registros = []
+
+    finally:
+        con.close()
+
+    return make_response(jsonify(registros))
 
 # @app.route("/sucursal/guardar", methods=["POST", "GET"])
 # @login
@@ -249,47 +323,3 @@ def tbodysucursal():
 #     con.close()
 
 #     return make_response(jsonify(registros))
-
-@app.route("/sucursal/buscar", methods=["GET"])
-@login
-def buscarsucursal():
-    if not con.is_connected():
-        con.reconnect()
-
-    args     = request.args
-    busqueda = args["busqueda"]
-    busqueda = f"%{busqueda}%"
-    
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT Id_sucursal,
-           Nombre,
-           Direccion
-
-    FROM sucursal
-
-    WHERE Nombre LIKE %s
-    OR    Direccion          LIKE %s
-
-    ORDER BY Id_sucursal DESC
-
-    LIMIT 10 OFFSET 0
-    """
-    val    = (busqueda, busqueda)
-
-    try:
-        cursor.execute(sql, val)
-        registros = cursor.fetchall()
-
-    except mysql.connector.errors.ProgrammingError as error:
-        print(f"Ocurrió un error de programación en MySQL: {error}")
-        registros = []
-
-    finally:
-        con.close()
-
-    return make_response(jsonify(registros))
-
-
-
-
