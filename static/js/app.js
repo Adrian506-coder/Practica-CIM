@@ -608,6 +608,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
 
     let preferencias = $rootScope.preferencias || {}
     $rootScope.SesionService = SesionService
+    $scope.currentView = 'sucursal'
     
     $.get("sucursal/categorias", {
         categoria: "Abarrotes"
@@ -720,6 +721,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
