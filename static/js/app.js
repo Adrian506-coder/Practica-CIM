@@ -532,6 +532,7 @@ app.run(["$rootScope", "$location", "$timeout", "SesionService", function($rootS
 }])
 
 app.controller("loginCtrl", function ($scope, $http, $rootScope) {
+    $rootScope.currentView = ''
     $("#frmInicioSesion").submit(function (event) {
         event.preventDefault()
 
@@ -721,6 +722,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
