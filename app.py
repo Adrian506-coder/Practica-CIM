@@ -269,7 +269,7 @@ def buscarsucursal():
     FROM sucursal
 
     WHERE Nombre LIKE %s
-    OR    Descripcion          LIKE %s
+    OR    Direccion          LIKE %s
 
     ORDER BY Id_sucursal DESC
 
@@ -289,6 +289,7 @@ def buscarsucursal():
         con.close()
 
     return make_response(jsonify(registros))
+
 
 
 
