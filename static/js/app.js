@@ -591,6 +591,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, CategoriaFac
     },function (abarrotes){
         const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",abarrotes)
         console.log("Abarrotes Factory", categoriaAbarrotes.getInfo())
+        $scope.categoriaAbarrotes = categoriaAbarrotes
     })
     
     Pusher.logToConsole = true
@@ -696,6 +697,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
