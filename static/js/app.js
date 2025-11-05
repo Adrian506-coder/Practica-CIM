@@ -630,10 +630,10 @@ app.controller("sucursalCtrl", function ($scope, $http) {
                     <td>${sucursal.Nombre}</td>
                     <td>${sucursal.Direccion}</td>
                     // <td>
-                    //     <button class="btn btn-danger btn-eliminar" data-id="${traje.IdTraje}">Eliminar</button>
+                    //     <button class="btn btn-danger btn-eliminar" data-id="${sucursal.Id_sucursal}">Eliminar</button>
                     // </td>
                     // <td>
-                    //     <button class="btn btn-warning btn-modificar" data-id="${traje.IdTraje}">Modificar</button>
+                    //     <button class="btn btn-warning btn-modificar" data-id="${sucursal.Id_sucursal}">Modificar</button>
                     // </td>
                 </tr>
             `;
@@ -665,6 +665,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
