@@ -101,11 +101,28 @@
 
     <div id="appBanner" class="ng-hide" ng-show="!spinnerGrow">
         <div id="appHeader" class="text-end fw-bolder" style="font-size: 1.25rem;">
+
+            <!-- Información del usuario al lado izquierdo -->
+        <div id="userInfo" class="text-start">
+            <i class="bi bi-person-circle"></i>
+            <span><b>Tipo:</b> {{ SesionService.getTipo() }}</span> |
+            <span><b>Usuario:</b> {{ SesionService.getUsr() }}</span>
+        </div>
+
+        <!-- Hora al lado derecho -->
+        <div id="clock" class="text-end">
             <i class="bi bi-clock"></i>
-            {{ '{{ angularjsHora }}' }}
+            {{ angularjsHora }}
             <button class="btn btn-lg btn-cerrar-sesion ng-hide" ng-show="login">
                 <i class="bi bi-box-arrow-right"></i>
             </button>
+        </div>
+            
+            <!-- <i class="bi bi-clock"></i>
+            {{ '{{ angularjsHora }}' }}
+            <button class="btn btn-lg btn-cerrar-sesion ng-hide" ng-show="login">
+                <i class="bi bi-box-arrow-right"></i>
+            </button> -->
         </div>
     
         <ul id="appMenu" class="nav nav-underline justify-content-center">
