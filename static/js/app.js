@@ -82,7 +82,10 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
             milliseconds: diffMs
         })
 
-        $rootScope.angularjsHora = lxFechaHora.setLocale("es").toFormat("hh:mm:ss a")
+        // $rootScope.angularjsHora = lxFechaHora.setLocale("es").toFormat("hh:mm:ss a")
+        $rootScope.$applyAsync(() => {
+            $rootScope.angularjsHora = lxFechaHora.setLocale("es").toFormat("hh:mm:ss a");
+        });
         $timeout(actualizarFechaHora, 500)
     }
     actualizarFechaHora()
@@ -662,6 +665,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
