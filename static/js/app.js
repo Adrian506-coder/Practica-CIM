@@ -59,8 +59,8 @@ app.config(function ($routeProvider, $locationProvider) {
         controller: "loginCtrl"
     })
     .when("/trajes", {
-        templateUrl: "/trajes",
-        controller: "trajesCtrl"
+        templateUrl: "/sucursal",
+        controller: "sucursalCtrl"
     })
     .otherwise({
         redirectTo: "/"
@@ -662,6 +662,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
