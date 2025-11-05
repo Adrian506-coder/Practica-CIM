@@ -100,7 +100,23 @@
     </div>
 
     <div id="appBanner" class="ng-hide" ng-show="!spinnerGrow">
-        <div id="appHeader"  class="d-flex justify-content-end align-items-center fw-bolder" style="font-size: 1.25rem;">
+        <div id="appHeader" class="d-flex justify-content-between align-items-center fw-bolder" style="font-size: 1.25rem;">
+            <div ng-if="currentView === 'sucursal'" class="d-flex align-items-center">
+                <i class="bi bi-person-circle me-1"></i>
+                <span><b>Usuario:</b> {{ '{{ SesionService.getUsr() }}' }}</span>
+            </div>            
+            <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center me-3">
+                    <i class="bi bi-clock me-1"></i>
+                    {{ '{{ angularjsHora }}' }}
+                </div>
+                <button class="btn btn-lg btn-cerrar-sesion ng-hide" ng-show="login">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </div>
+        
+        </div>
+        <!-- <div id="appHeader"  class="d-flex justify-content-end align-items-center fw-bolder" style="font-size: 1.25rem;">
 
             <div ng-if="currentView === 'sucursal'" class="d-flex align-items-center me-3">
                 <i class="bi bi-person-circle me-1"></i>
@@ -114,7 +130,7 @@
             <button class="btn btn-lg btn-cerrar-sesion ng-hide" ng-show="login">
                 <i class="bi bi-box-arrow-right"></i>
             </button>
-        </div>
+        </div> -->
     
         <ul id="appMenu" class="nav nav-underline justify-content-center">
             <li class="nav-item ng-hide" ng-show="!login" style="display: none;">
