@@ -73,7 +73,7 @@ app.run(["$rootScope", "$location", "$timeout", function($rootScope, $location, 
     $rootScope.incompleteRequest = false
     $rootScope.completeRequest   = false
     $rootScope.login             = localStorage.getItem("login")
-    const defaultRouteAuth       = "#/rentas"
+    const defaultRouteAuth       = "#/sucursal"
     let timesChangesSuccessRoute = 0
 
 
@@ -662,6 +662,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
