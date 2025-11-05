@@ -545,7 +545,8 @@ app.controller("loginCtrl", function ($scope, $http, $rootScope) {
                 localStorage.setItem("login", "1")
                 localStorage.setItem("preferencias", JSON.stringify(respuesta[0]))
                 $("#frmInicioSesion").get(0).reset()
-                location.reload()
+                // location.reload()
+                $scope.$applyAsync()
                 return
             }
 
@@ -722,6 +723,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
