@@ -291,3 +291,4 @@ def buscarsucursal():
     return make_response(jsonify(registros))
 
 
+
