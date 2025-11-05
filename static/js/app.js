@@ -482,6 +482,10 @@ app.run(["$rootScope", "$location", "$timeout", "SesionService", function($rootS
 
                         localStorage.setItem("login", login)
                         localStorage.setItem("preferencias", JSON.stringify(preferencias))
+
+                        SesionService.setTipo(preferencias.tipo)
+                        SesionService.setUsr(preferencias.usr)
+                        
                         $rootScope.redireccionar(login, preferencias)
                     })
 
@@ -720,6 +724,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
