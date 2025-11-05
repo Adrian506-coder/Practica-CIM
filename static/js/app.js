@@ -575,7 +575,7 @@ app.factory("CategoriaFactory", function () {
 })
 
 
-app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SessionService, CategoriaFactory) {
+app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory) {
     function buscarsucursal() {
         $.get("/tbodysucursal", function (trsHTML) {
             $("#tbodySucursal").html(trsHTML)
@@ -697,6 +697,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
