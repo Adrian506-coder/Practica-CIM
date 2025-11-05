@@ -588,7 +588,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SessionServi
     $scope.SesionService = SesionService
 
     $.get("sucursal/categorias", {
-        categoria: "abarrotes"
+        categoria: "Abarrotes"
     },function (abarrotes){
         const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",abarrotes)
         console.log("Abarrotes Factory", categoriaAbarrotes.getInfo())
@@ -697,6 +697,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
