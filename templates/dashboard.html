@@ -102,23 +102,8 @@
     <div id="appBanner" class="ng-hide" ng-show="!spinnerGrow">
         <div id="appHeader" class="text-end fw-bolder" style="font-size: 1.25rem;">
 
-        <!-- <div id="userInfo" class="text-start">
-            <i class="bi bi-person-circle"></i>
-            <span><b>Tipo:</b> {{ '{{ SesionService.getTipo() }}' }}</span> | 
-            <span><b>Usuario:</b> {{ '{{ SesionService.getUsr() }}' }}</span>
-        </div>
-
-        <div id="clock" class="text-end">
-            <i class="bi bi-clock"></i>
-            {{ '{{ angularjsHora }}' }}
-            <button class="btn btn-lg btn-cerrar-sesion ng-hide" ng-show="login">
-                <i class="bi bi-box-arrow-right"></i>
-            </button>
-        </div> -->
-
             <div ng-if="currentView === 'sucursal'" class="d-flex align-items-center">
                 <i class="bi bi-person-circle me-1"></i>
-                <span><b>Tipo:</b> {{ '{{ SesionService.getTipo() }}' }}</span> |
                 <span><b>Usuario:</b> {{ '{{ SesionService.getUsr() }}' }}</span>
             </div>
             
