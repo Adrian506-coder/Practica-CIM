@@ -589,9 +589,9 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SessionServi
 
     $.get("sucursal/categorias", {
         categoria: "abarrotes"
-    },function (galletas){
-        const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",Abarrotes)
-        console.log("Abarrotes Factory", CategoriaAbarrotes.getInfo())
+    },function (abarrotes){
+        const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",abarrotes)
+        console.log("Abarrotes Factory", categoriaAbarrotes.getInfo())
     })
     
     Pusher.logToConsole = true
@@ -697,6 +697,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
