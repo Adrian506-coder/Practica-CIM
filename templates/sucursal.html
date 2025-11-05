@@ -11,14 +11,6 @@
         <button class="btn btn-primary">Guardar</button>
     </div>
 </form>
-<!-- <div class="card text-bg-success mb-3" style="max-width: 18rem;">
-  <div class="card-header">Sesión</div>
-  <div class="card-body">
-    <h5 class="card-title">Información</h5>
-    <p class="card-text"><b>Tipo: </b> {{ '{{ SesionService.getTipo() }}' }}</p>
-    <p class="card-text"><b>Usuario: </b> {{ '{{ SesionService.getUsr() }}' }}</p>
-  </div>
-</div> -->
 <div class="mb-3 input-group">
     <input type="text" class="form-control" id="txtBuscarSucursal" placeholder="Buscar sucursal por nombre">
     <button class="btn btn-secondary" id="btnBuscarSucursal" type="button">Buscar</button>
@@ -48,4 +40,27 @@
     </div>
   </div>
 </div>
-
+<div class="row">
+  <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
+    <h5 class="text-center">{{ "{{categoriaMini_super.titulo}}" }}</h5>
+    <div class="card text-bg-info mb-3">
+      <div class="card-header">sucursal</div>
+      <div class="card-body">
+        <h5 class="card-title">{{ "{{sucursal.Nombre}}" }}</h5>
+        <p class="card-text"></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
+    <h5 class="text-center">{{ "{{categoriaSupermercado.titulo}}" }}</h5>
+    <div class="card text-bg-info mb-3">
+      <div class="card-header">sucursal</div>
+      <div class="card-body">
+        <h5 class="card-title">{{ "{{sucursal.Nombre}}" }}</h5>
+        <p class="card-text"></p>
+      </div>
+    </div>
+  </div>
+</div>
