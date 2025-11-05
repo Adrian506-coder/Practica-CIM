@@ -482,10 +482,6 @@ app.run(["$rootScope", "$location", "$timeout", "SesionService", function($rootS
 
                         localStorage.setItem("login", login)
                         localStorage.setItem("preferencias", JSON.stringify(preferencias))
-
-                        SesionService.setTipo(preferencias.tipo)
-                        SesionService.setUsr(preferencias.usr)
-                        
                         $rootScope.redireccionar(login, preferencias)
                     })
 
@@ -610,20 +606,17 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
 
     buscarsucursal()
 
-    let preferencias = $rootScope.preferencias
+    let preferencias = $rootScope.preferencias || {}
     $scope.SesionService = SesionService
 
-    $.get("/preferencias", function (data) {
+    SesionService.setTipo(preferencias.tipo)
+    SesionService.setUsr(preferencias.usr)
 
-        SesionService.setUsr(data.usr);
-        SesionService.setTipo(data.tipo);
+    // 🔹 Refresca el HTML de Angular
+    $scope.$applyAsync();
 
-        console.log("🟢 Sesión cargada desde Flask:", data);
-
-        $scope.$applyAsync();
-    }).fail(function (xhr) {
-        console.error("⚠️ No hay sesión iniciada:", xhr.responseText);
-    });
+    // 🔹 Debug (para verificar)
+    console.log("✅ Preferencias cargadas en sucursalCtrl:", SesionService.getUsr(), SesionService.getTipo());
     
     $.get("sucursal/categorias", {
         categoria: "Abarrotes"
@@ -736,6 +729,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
