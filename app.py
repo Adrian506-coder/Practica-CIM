@@ -201,7 +201,7 @@ def buscarsucursal():
 
     return make_response(jsonify(registros))
 
-@app.route("sucursal/categorias", methods=["GET"])
+@app.route("/sucursal/categorias", methods=["GET"])
 @login
 def sucursalcategoria():
     if not con.is_connected():
@@ -323,4 +323,5 @@ def sucursalcategoria():
 #     con.close()
 
 #     return make_response(jsonify(registros))
+
 
