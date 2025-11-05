@@ -551,32 +551,32 @@ app.controller("loginCtrl", function ($scope, $http, $rootScope) {
     })
 })
 
-app.controller("trajesCtrl", function ($scope, $http) {
-    function buscarTrajes() {
-        $.get("/tbodyTrajes", function (trsHTML) {
-            $("#tbodyTrajes").html(trsHTML)
+app.controller("sucursalCtrl", function ($scope, $http) {
+    function buscarsucursal() {
+        $.get("/tbodysucursal", function (trsHTML) {
+            $("#tbodySucursal").html(trsHTML)
         })
     }
-    function editarTraje(id) {
-        fetch(`/trajes/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {      
-                    const traje = data[0];
+    // function editarTraje(id) {
+    //     fetch(`/trajes/${id}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data.length > 0) {      
+    //                 const traje = data[0];
 
-                    console.log("Nombre:", traje.nombreTraje);
-                    console.log("Descripción:", traje.descripcion);
-                    console.log("ID del traje:", traje.IdTraje);
+    //                 console.log("Nombre:", traje.nombreTraje);
+    //                 console.log("Descripción:", traje.descripcion);
+    //                 console.log("ID del traje:", traje.IdTraje);
                     
-                    $scope.txtNombre = traje.nombreTraje;
-                    $scope.txtDescripcion = traje.descripcion;
-                    $scope.txtIdTraje = traje.IdTraje;
-                    $scope.$apply();
-                }
-            });
-    }
+    //                 $scope.txtNombre = traje.nombreTraje;
+    //                 $scope.txtDescripcion = traje.descripcion;
+    //                 $scope.txtIdTraje = traje.IdTraje;
+    //                 $scope.$apply();
+    //             }
+    //         });
+    // }
 
-    buscarTrajes()
+    buscarsucursal()
     
     Pusher.logToConsole = true
 
@@ -584,85 +584,85 @@ app.controller("trajesCtrl", function ($scope, $http) {
       cluster: "us2"
     })
 
-    var channel = pusher.subscribe("canalTrajes")
-    channel.bind("eventoTrajes", function(data) {
-        buscarTrajes()
+    var channel = pusher.subscribe("canalsucursal")
+    channel.bind("eventosucursal", function(data) {
+        buscarsucursal()
     })
     
-    $(document).on("click", "#tbodyTrajes .btn-modificar", function(){
-        const id = $(this).data("id");
-        editarTraje(id);
-    });
-    $scope.txtIdTraje = null;
-    $scope.guardarTraje = function() {
-    $http.post("/trajes/guardar", {
-            IdTraje: $scope.txtIdTraje,
-            txtNombre: $scope.txtNombre,
-            txtDescripcion: $scope.txtDescripcion
-        }).then(function(respuesta) {
-            alert(respuesta.data.mensaje);
-            $scope.txtNombre = "";
-            $scope.txtDescripcion = "";
-            $scope.txtIdTraje = null;
-            buscarTrajes();
-        }, function(error) {
-            console.error(error);
-        });
-    };
+    // $(document).on("click", "#tbodyTrajes .btn-modificar", function(){
+    //     const id = $(this).data("id");
+    //     editarTraje(id);
+    // });
+    // $scope.txtIdTraje = null;
+    // $scope.guardarTraje = function() {
+    // $http.post("/trajes/guardar", {
+    //         IdTraje: $scope.txtIdTraje,
+    //         txtNombre: $scope.txtNombre,
+    //         txtDescripcion: $scope.txtDescripcion
+    //     }).then(function(respuesta) {
+    //         alert(respuesta.data.mensaje);
+    //         $scope.txtNombre = "";
+    //         $scope.txtDescripcion = "";
+    //         $scope.txtIdTraje = null;
+    //         buscarTrajes();
+    //     }, function(error) {
+    //         console.error(error);
+    //     });
+    // };
 
-    $(document).on("click", "#btnBuscarTrajes", function() {
-    const busqueda = $("#txtBuscarTrajes").val().trim();
+    $(document).on("click", "#btnBuscarSucursal", function() {
+    const busqueda = $("#txtBuscarSucursal").val().trim();
 
     if (busqueda === "") {
-        buscarTrajes(); 
+        buscarsucursal(); 
         return;
     }
 
-    $.get("/trajes/buscar", { busqueda: busqueda }, function(registros) {
+    $.get("/sucursal/buscar", { busqueda: busqueda }, function(registros) {
         let trsHTML = "";
-        registros.forEach(traje => {
+        registros.forEach(sucursal => {
             trsHTML += `
                 <tr>
-                    <td>${traje.IdTraje}</td>
-                    <td>${traje.nombreTraje}</td>
-                    <td>${traje.descripcion}</td>
-                    <td>
-                        <button class="btn btn-danger btn-eliminar" data-id="${traje.IdTraje}">Eliminar</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-warning btn-modificar" data-id="${traje.IdTraje}">Modificar</button>
-                    </td>
+                    <td>${sucursal.Id_sucursal}</td>
+                    <td>${sucursal.Nombre}</td>
+                    <td>${sucursal.Direccion}</td>
+                    // <td>
+                    //     <button class="btn btn-danger btn-eliminar" data-id="${traje.IdTraje}">Eliminar</button>
+                    // </td>
+                    // <td>
+                    //     <button class="btn btn-warning btn-modificar" data-id="${traje.IdTraje}">Modificar</button>
+                    // </td>
                 </tr>
             `;
         });
-        $("#tbodyTrajes").html(trsHTML);
+        $("#tbodySucursal").html(trsHTML);
     }).fail(function(xhr){
-        console.error("Error al buscar trajes:", xhr.responseText);
+        console.error("Error al buscar sucursal:", xhr.responseText);
     });
 });
 
-$("#txtBuscarTrajes").on("keypress", function(e) {
+$("#txtBuscarSucursal").on("keypress", function(e) {
     if(e.which === 13) {
-        $("#btnBuscarTrajes").click();
+        $("#btnBuscarSucursal").click();
     }
 });
-
-    $(document).on("click", "#tbodyTrajes .btn-eliminar", function(){
-        const id = $(this).data("id");
-        if(confirm("¿Deseas eliminar este traje?")) {
-            $.post("/trajes/eliminar", {id: id}, function(response){
-                console.log("Traje eliminado correctamente");
-                 buscarTrajes()
-            }).fail(function(xhr){
-                console.error("Error al eliminar traje:", xhr.responseText);
-            });
-        }
-    });
+    // $(document).on("click", "#tbodyTrajes .btn-eliminar", function(){
+    //     const id = $(this).data("id");
+    //     if(confirm("¿Deseas eliminar este traje?")) {
+    //         $.post("/trajes/eliminar", {id: id}, function(response){
+    //             console.log("Traje eliminado correctamente");
+    //              buscarTrajes()
+    //         }).fail(function(xhr){
+    //             console.error("Error al eliminar traje:", xhr.responseText);
+    //         });
+    //     }
+    // });
 })
 
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
