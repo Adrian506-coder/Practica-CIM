@@ -58,14 +58,6 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/login",
         controller: "loginCtrl"
     })
-    .when("/rentas", {
-        templateUrl: "/rentas",
-        controller: "rentasCtrl"
-    })
-    .when("/clientes", {
-        templateUrl: "/clientes",
-        controller: "clientesCtrl"
-    })
     .when("/trajes", {
         templateUrl: "/trajes",
         controller: "trajesCtrl"
@@ -671,6 +663,7 @@ $("#txtBuscarTrajes").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
