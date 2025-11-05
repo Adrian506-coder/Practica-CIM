@@ -58,7 +58,7 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/login",
         controller: "loginCtrl"
     })
-    .when("/trajes", {
+    .when("/sucursal", {
         templateUrl: "/sucursal",
         controller: "sucursalCtrl"
     })
@@ -665,29 +665,6 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
