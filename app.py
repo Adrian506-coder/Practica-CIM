@@ -235,47 +235,50 @@ def sucursalcategoria():
 
     return make_response(jsonify(registros))
 
-# @app.route("/sucursal/guardar", methods=["POST", "GET"])
-# @login
-# def guardarsucursal():
-#     if not con.is_connected():
-#         con.reconnect()
+@app.route("/sucursal/guardar", methods=["POST", "GET"])
+@login
+def guardarsucursal():
+    if not con.is_connected():
+        con.reconnect()
 
-#     if request.method == "POST":
-#         data = request.get_json(silent=True) or request.form
-#         id_traje = data.get("IdTraje")
-#         nombre = data.get("txtNombre")
-#         descripcion = data.get("txtDescripcion")
-#     else: 
-#         nombre = request.args.get("nombre")
-#         descripcion = request.args.get("descripcion")
-#     if not nombre or not descripcion:
-#         return jsonify({"error": "Faltan parámetros"}), 400
+    if request.method == "POST":
+        data = request.get_json(silent=True) or request.form
+        Id_sucursal = data.get("txtIdsucursal")
+        Nombre = data.get("txtNombre")
+        Direccion = data.get("txtDescripcio")
+        Categoria = data.get("txtCategoria")
+    else: 
+        Nombre = request.args.get("Nombre")
+        Direccion = request.args.get("Direccion")
+        Categoria = request.args.get("Categoria")
+    if not Nombre or not Direccion  or not Categoria:
+        return jsonify({"error": "Faltan parámetros"}), 400
         
-#     cursor = con.cursor()
+    cursor = con.cursor()
     
-#     if id_traje:
-#         sql = """
-#         UPDATE  trajes
-#             SET nombreTraje = %s,
-#             descripcion = %s
-#         WHERE IdTraje = %s
-#         """
-#         cursor.execute(sql, (nombre, descripcion, id_traje))
+    if id_traje:
+        sql = """
+        UPDATE  sucursal
+            SET Nombre = %s,
+            Direccion = %s
+            Categoria = %s
+        WHERE Id_sucursal = %s
+        """
+        cursor.execute(sql, (Nombre, Descripcion, Categoria, Id_sucursal))
         
-#         pusherProductos()
-#     else: 
-#         sql = """
-#         INSERT INTO trajes (nombreTraje, descripcion)
-#         VALUES (%s, %s)
-#         """
-#         cursor.execute(sql, (nombre, descripcion))
+        pusherSucursal()
+    else: 
+        sql = """
+        INSERT INTO sucursal (Nombre, Descripcion, Categoria)
+        VALUES (%s, %s)
+        """
+        cursor.execute(sql, (Nombre, Descripcion, Categoria))
 
-#         pusherProductos()
+        pusherSucursal()
 
-#     con.commit()
-#     con.close()
-#     return make_response(jsonify({"mensaje": "Traje guardado correctamente"}))
+    con.commit()
+    con.close()
+    return make_response(jsonify({"mensaje": "Sucursal guardado correctamente"}))
 
 # @app.route("/trajes/eliminar", methods=["POST", "GET"])
 # @login
@@ -323,5 +326,6 @@ def sucursalcategoria():
 #     con.close()
 
 #     return make_response(jsonify(registros))
+
 
 
