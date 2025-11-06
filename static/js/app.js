@@ -597,8 +597,39 @@ app.factory("CategoriaFactory", function () {
     }
 })
 
+app.service("MensajeService", function () {
+    this.modal = modal
+    this.pop = pop
+    this.toast = toast
+})
 
-app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory) {
+app.config( function ($routeProvider, $LocationProvider, $provide) {
+    $provide.decorator("MensajeService", function ($deLegate, $Log){
+        const originalModal = $deLegate.modal
+        const originalPop = $deLegate.pop
+        const originalToast = $deLegate.toast
+
+        $deLegate.modal = function (msg){
+            originalModal(msg, "Mesaje", [
+                {"html": "Aceptar", "class": "btn btn-lg btn-secondary", defaultButton: true, dismiss: true}
+            ])
+        }
+
+        $deLegate.pop = function (msg){
+            $(".div-temporal").remove()
+            $("body").prepend($("<div />", {
+                class: "div-temporal"
+            }))
+            originalPop(".div-temporal", msg, "info")
+        }
+        $deLegate.toast = function (msg){
+            originalToast(msg, 2)
+        }
+        return $deLegate
+    })
+})
+
+app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory, MensajeService) {
     function buscarsucursal() {
         $.get("/tbodysucursal", function (trsHTML) {
             $("#tbodySucursal").html(trsHTML)
@@ -667,22 +698,25 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     //     const id = $(this).data("id");
     //     editarTraje(id);
     // });
-    // $scope.txtIdTraje = null;
-    // $scope.guardarTraje = function() {
-    // $http.post("/trajes/guardar", {
-    //         IdTraje: $scope.txtIdTraje,
-    //         txtNombre: $scope.txtNombre,
-    //         txtDescripcion: $scope.txtDescripcion
-    //     }).then(function(respuesta) {
-    //         alert(respuesta.data.mensaje);
-    //         $scope.txtNombre = "";
-    //         $scope.txtDescripcion = "";
-    //         $scope.txtIdTraje = null;
-    //         buscarTrajes();
-    //     }, function(error) {
-    //         console.error(error);
-    //     });
-    // };
+    $scope.txtIdsucursal = null;
+    $scope.guardarsucursal = function() {
+    $http.post("/sucursal/guardar", {
+            txtIdsucursal: $scope.txtIdsucursal,
+            txtNombre: $scope.txtNombre,
+            txtDescripcio: $scope.txtDescripcion,
+            txtCategoria: $scope.txtCategoria
+        }).then(function(respuesta) {
+            alert(respuesta.data.mensaje);
+            MensajeService.pop("Has agregado una sucursal")
+            $scope.txtNombre = "";
+            $scope.txtDescripcio = "";
+            $scope.txtCategoria = "";
+            $scope.txtIdsucursal = null;
+            buscarsucursal();
+        }, function(error) {
+            console.error(error);
+        });
+    };
 
     $(document).on("click", "#btnBuscarSucursal", function() {
     const busqueda = $("#txtBuscarSucursal").val().trim();
@@ -736,6 +770,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
