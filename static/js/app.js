@@ -619,11 +619,11 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
         $scope.categoriaAbarrotes = categoriaAbarrotes
     })
     $.get("sucursal/categorias", {
-        categoria: "Mini super"
+        categoria: "Minisuper"
     },function (minisuper){
-        const categoriaMini_super = CategoriaFactory.create("Mini super",minisuper)
-        console.log("Mini super Factory", categoriaMini_super.getInfo())
-        $scope.categoriaMini_super = categoriaMini_super
+        const categoriaMinisuper = CategoriaFactory.create("Minisuper",minisuper)
+        console.log("Mini super Factory", categoriaMinisuper.getInfo())
+        $scope.categoriaMinisuper = categoriaMinisuper
     })
     $.get("sucursal/categorias", {
         categoria: "Supermercado"
@@ -736,6 +736,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
