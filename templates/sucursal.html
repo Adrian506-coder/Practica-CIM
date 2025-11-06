@@ -28,7 +28,7 @@
         <tbody id="tbodySucursal"></tbody>
     </table>
 </div>
-<div class="row">
+<!-- <div class="row">
     <h5 class="text-center">{{ "{{categoriaAbarrotes.titulo}}" }}</h5>
   <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
     <div class="card text-bg-info mb-3">
@@ -41,8 +41,8 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
     <h5 class="text-center">{{ "{{categoriaMinisuper.titulo}}" }}</h5>
+  <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
     <div class="card text-bg-info mb-3">
       <div class="card-header">sucursal</div>
       <div class="card-body">
@@ -53,8 +53,8 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
     <h5 class="text-center">{{ "{{categoriaSupermercado.titulo}}" }}</h5>
+  <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
     <div class="card text-bg-info mb-3">
       <div class="card-header">sucursal</div>
       <div class="card-body">
@@ -63,4 +63,50 @@
       </div>
     </div>
   </div>
+</div> -->
+<div class="container">
+
+  <!-- Categoría Abarrotes -->
+  <h5 class="text-center my-3">{{ "{{categoriaAbarrotes.titulo}}" }}</h5>
+  <div class="row">
+    <div class="col-md-4" ng-repeat="sucursal in categoriaAbarrotes.sucursales">
+      <div class="card text-bg-info mb-3">
+        <div class="card-header">Sucursal</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ "{{sucursal.Nombre}}" }}</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categoría Minisuper -->
+  <h5 class="text-center my-3">{{ "{{categoriaMinisuper.titulo}}" }}</h5>
+  <div class="row">
+    <div class="col-md-4" ng-repeat="sucursal in categoriaMinisuper.sucursales">
+      <div class="card text-bg-info mb-3">
+        <div class="card-header">Sucursal</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ "{{sucursal.Nombre}}" }}</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categoría Supermercado -->
+  <h5 class="text-center my-3">{{ "{{categoriaSupermercado.titulo}}" }}</h5>
+  <div class="row">
+    <div class="col-md-4" ng-repeat="sucursal in categoriaSupermercado.sucursales">
+      <div class="card text-bg-info mb-3">
+        <div class="card-header">Sucursal</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ "{{sucursal.Nombre}}" }}</h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
