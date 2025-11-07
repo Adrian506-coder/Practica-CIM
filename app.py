@@ -305,9 +305,9 @@ def editarsucursal(id):
 
     return make_response(jsonify(registros))
 
-@app.route("/productos/inventario/<int:id>")
+@app.route("/sucursal/inventario/<int:id>")
 @login
-def productosIngredientes(id):
+def sucursalInventario(id):
     if not con.is_connected():
         con.reconnect()
 
@@ -361,6 +361,7 @@ def productosIngredientes(id):
 #     pusherProductos()
 
 #     return make_response(jsonify({"status": "ok"}))
+
 
 
 
