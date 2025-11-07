@@ -641,29 +641,31 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     let preferencias = $rootScope.preferencias || {}
     $rootScope.SesionService = SesionService
     $rootScope.currentView = 'sucursal'
+
+    function Categorias() {
+        $.get("sucursal/categorias", {
+            categoria: "Abarrotes"
+        },function (abarrotes){
+            const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",abarrotes)
+            console.log("Abarrotes Factory", categoriaAbarrotes.getInfo())
+            $scope.categoriaAbarrotes = categoriaAbarrotes
+        })
+        $.get("sucursal/categorias", {
+            categoria: "Minisuper"
+        },function (minisuper){
+            const categoriaMinisuper = CategoriaFactory.create("Minisuper",minisuper)
+            console.log("Mini super Factory", categoriaMinisuper.getInfo())
+            $scope.categoriaMinisuper = categoriaMinisuper
+        })
+        $.get("sucursal/categorias", {
+            categoria: "Supermercado"
+        },function (supermercado){
+            const categoriaSupermercado = CategoriaFactory.create("Supermercado",supermercado)
+            console.log("Supermercado Factory", categoriaSupermercado.getInfo())
+            $scope.categoriaSupermercado = categoriaSupermercado
+        })
     
-    $.get("sucursal/categorias", {
-        categoria: "Abarrotes"
-    },function (abarrotes){
-        const categoriaAbarrotes = CategoriaFactory.create("Abarrotes",abarrotes)
-        console.log("Abarrotes Factory", categoriaAbarrotes.getInfo())
-        $scope.categoriaAbarrotes = categoriaAbarrotes
-    })
-    $.get("sucursal/categorias", {
-        categoria: "Minisuper"
-    },function (minisuper){
-        const categoriaMinisuper = CategoriaFactory.create("Minisuper",minisuper)
-        console.log("Mini super Factory", categoriaMinisuper.getInfo())
-        $scope.categoriaMinisuper = categoriaMinisuper
-    })
-    $.get("sucursal/categorias", {
-        categoria: "Supermercado"
-    },function (supermercado){
-        const categoriaSupermercado = CategoriaFactory.create("Supermercado",supermercado)
-        console.log("Supermercado Factory", categoriaSupermercado.getInfo())
-        $scope.categoriaSupermercado = categoriaSupermercado
-    })
-    
+    }
     Pusher.logToConsole = true
 
     var pusher = new Pusher("b51b00ad61c8006b2e6f", {
@@ -673,6 +675,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     var channel = pusher.subscribe("canalsucursal")
     channel.bind("eventosucursal", function(data) {
         buscarsucursal()
+        Categorias()
     })
 
     // function editarTraje(id) {
@@ -776,6 +779,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
