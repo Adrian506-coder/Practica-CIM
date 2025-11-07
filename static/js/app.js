@@ -668,7 +668,7 @@ app.config( function ($routeProvider, $locationProvider, $provide) {
     })
 })
 
-app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory, MensajeService) {
+app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory, MensajeService, InventarioFacade) {
     function buscarsucursal() {
         $.get("/tbodysucursal", function (trsHTML) {
             $("#tbodySucursal").html(trsHTML)
@@ -892,6 +892,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
