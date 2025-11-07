@@ -622,8 +622,8 @@ app.service("InventarioAPI", function ($q) {
         var deferred = $q.defer()
 
         $.get(`sucursal/inventario/${sucursal}`)
-        .done(function (inventario){
-            deferred.resolve(inventario)
+        .done(function (sucursal){
+            deferred.resolve(sucursal)
         })
         .fail(function (error) {
             deferred.reject(error)
@@ -637,7 +637,7 @@ app.factory("InventarioFacade", function(SucursalAPI, InventarioAPI, $q) {
         obtenerInventarioSucursal: function(sucursal) {
             return $q.all({
                 sucursal: SucursalAPI.sucursal(sucursal),
-                inventario: InventarioAPI.inventarioSucursal(inventario)
+                inventario: InventarioAPI.inventarioSucursal(sucursal)
             })
         }
     };
@@ -861,6 +861,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
