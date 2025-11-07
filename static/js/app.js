@@ -604,7 +604,7 @@ app.service("MensajeService", function () {
 })
 
 app.config( function ($routeProvider, $locationProvider, $provide) {
-    $provide.decorator("MensajeService", function ($delegate, $Log){
+    $provide.decorator("MensajeService", function ($delegate, $log){
         const originalModal = $delegate.modal
         const originalPop = $delegate.pop
         const originalToast = $delegate.toast
@@ -770,6 +770,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
