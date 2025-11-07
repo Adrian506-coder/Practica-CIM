@@ -256,11 +256,11 @@ def guardarsucursal():
         
     cursor = con.cursor()
     
-    if id_traje:
+    if Id_sucursal:
         sql = """
         UPDATE  sucursal
             SET Nombre = %s,
-            Direccion = %s
+            Direccion = %s,
             Categoria = %s
         WHERE Id_sucursal = %s
         """
@@ -270,7 +270,7 @@ def guardarsucursal():
     else: 
         sql = """
         INSERT INTO sucursal (Nombre, Direccion, Categoria)
-        VALUES (%s, %s)
+        VALUES (%s, %s, %s)
         """
         cursor.execute(sql, (Nombre, Direccion, Categoria))
 
@@ -326,6 +326,7 @@ def guardarsucursal():
 #     con.close()
 
 #     return make_response(jsonify(registros))
+
 
 
 
