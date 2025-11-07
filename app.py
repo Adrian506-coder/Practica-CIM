@@ -245,7 +245,7 @@ def guardarsucursal():
         data = request.get_json(silent=True) or request.form
         Id_sucursal = data.get("txtIdsucursal")
         Nombre = data.get("txtNombre")
-        Direccion = data.get("txtDescripcio")
+        Direccion = data.get("txtDireccion")
         Categoria = data.get("txtCategoria")
     else: 
         Nombre = request.args.get("Nombre")
@@ -269,10 +269,10 @@ def guardarsucursal():
         pusherSucursal()
     else: 
         sql = """
-        INSERT INTO sucursal (Nombre, Descripcion, Categoria)
+        INSERT INTO sucursal (Nombre, Direccion, Categoria)
         VALUES (%s, %s)
         """
-        cursor.execute(sql, (Nombre, Descripcion, Categoria))
+        cursor.execute(sql, (Nombre, Direccion, Categoria))
 
         pusherSucursal()
 
@@ -326,6 +326,7 @@ def guardarsucursal():
 #     con.close()
 
 #     return make_response(jsonify(registros))
+
 
 
 
