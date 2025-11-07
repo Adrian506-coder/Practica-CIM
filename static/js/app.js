@@ -637,7 +637,7 @@ app.factory("InventarioFacade", function(SucursalAPI, InventarioAPI, $q) {
         obtenerInventarioSucursal: function(sucursal) {
             return $q.all({
                 sucursal: SucursalAPI.sucursal(sucursal),
-                inventario: InventarioAPI.inventarioSucursal(sucursal)
+                inventario: InventarioAPI.inventarioSucursal(inventario)
             })
         }
     };
@@ -799,42 +799,11 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
                     </tr>`
             }
     
-            html += `
-                </tbody>
-            </table>`
+            html += ` </tbody> </table> `
     
             MensajeService.modal(html)
         })
     })
-
-
-    // $(document).off("click", ".btn-inventario")
-    // $(document).on("click", ".btn-inventario", function (event) {
-    //     const id = $(this).data("id")
-
-    //     InventarioFacade.obtenerInventarioSucursal(id).then(function (Inventario) {
-    //         let sucursal = Inventario.sucursal[0]
-    //         let html = `<b>Sucursal: </b>${sucursal.Nombre}<br>
-    //         <b> Direccion: </b>${sucursal.Direccion <br>
-    //         <table class="table table-sm">
-    //         <thead>
-    //             <tr>
-    //                 <th>Productos</th>
-    //                 <th>Descripcion</th>
-    //                 <th>Existencias</th>
-    //         </tr></thead><tbody>`
-    //         for (let x in Inventario.productos) {
-    //             const Inventario = Inventario.productos[x]
-    //             html += `<tr>
-    //                 <td>${productos.Nombre_Producto}</td>
-    //                 <td>${productos.Descripcion} </td>
-    //                 <td>${productos.Existencias}</td>
-    //             </tr>`
-    //         }
-    //         html += '</tbody></table>'
-    //         MensajesService.modal(html)
-    //     })
-    // })
 
     $(document).on("click", "#btnBuscarSucursal", function() {
     const busqueda = $("#txtBuscarSucursal").val().trim();
@@ -892,6 +861,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
