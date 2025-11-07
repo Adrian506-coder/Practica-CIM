@@ -175,18 +175,20 @@ def buscarsucursal():
     sql    = """
     SELECT Id_sucursal,
            Nombre,
+           Categoria,
            Direccion
 
     FROM sucursal
 
     WHERE Nombre LIKE %s
+    OR    Categoria          LIKE %s
     OR    Direccion          LIKE %s
 
     ORDER BY Id_sucursal DESC
 
     LIMIT 10 OFFSET 0
     """
-    val    = (busqueda, busqueda)
+    val    = (busqueda, busqueda, busqueda)
 
     try:
         cursor.execute(sql, val)
@@ -326,6 +328,7 @@ def guardarsucursal():
 #     con.close()
 
 #     return make_response(jsonify(registros))
+
 
 
 
