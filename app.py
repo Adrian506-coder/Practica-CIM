@@ -147,6 +147,7 @@ def tbodysucursal():
     sql    = """
     SELECT Id_sucursal,
            Nombre,
+           Categoria,
            Direccion
 
     FROM sucursal
@@ -328,6 +329,7 @@ def guardarsucursal():
 #     con.close()
 
 #     return make_response(jsonify(registros))
+
 
 
 
