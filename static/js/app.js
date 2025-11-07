@@ -602,7 +602,46 @@ app.service("MensajeService", function () {
     this.pop = pop
     this.toast = toast
 })
+app.service("SucursalAPI", function ($q) {
+    this.sucursal = function (id) {
+        var deferred = $q.defer()
 
+        $.get(`sucursal/${id}`)
+        .done(function (sucursal){
+            deferred.resolve(sucursal)
+        })
+        .fail(function (error) {
+            deferred.reject(error)
+        })
+
+        return deferred.promise
+   }
+})
+app.service("InventarioAPI", function ($q) {
+    this.inventarioSucursal = function (sucursal) {
+        var deferred = $q.defer()
+
+        $.get(`sucursal/inventario/${sucursal}`)
+        .done(function (inventario){
+            deferred.resolve(inventario)
+        })
+        .fail(function (error) {
+            deferred.reject(error)
+        })
+
+        return deferred.promise
+    }
+})
+app.factory("InventarioFacade", function(SucursalAPI, InventarioAPI, $q) {
+    return {
+        obtenerInventarioSucursal: function(sucursal) {
+            return $q.all({
+                sucursal: SucursalAPI.sucursal(sucursal),
+                inventario: InventarioAPI.inventarioSucursal(sucursal)
+            })
+        }
+    };
+})
 app.config( function ($routeProvider, $locationProvider, $provide) {
     $provide.decorator("MensajeService", function ($delegate, $log){
         const originalModal = $delegate.modal
@@ -705,12 +744,12 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     // });
     $scope.txtIdsucursal = null;
     $scope.guardarsucursal = function() {
-        console.log({
-            txtIdsucursal: $scope.txtIdsucursal,
-            txtNombre: $scope.txtNombre,
-            txtDireccion: $scope.txtDireccion,
-            txtCategoria: $scope.txtCategoria
-        });
+        // console.log({
+        //     txtIdsucursal: $scope.txtIdsucursal,
+        //     txtNombre: $scope.txtNombre,
+        //     txtDireccion: $scope.txtDireccion,
+        //     txtCategoria: $scope.txtCategoria
+        // });
     $http.post("/sucursal/guardar", {
             txtIdsucursal: $scope.txtIdsucursal,
             txtNombre: $scope.txtNombre,
@@ -728,6 +767,74 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
             console.error(error);
         });
     };
+
+    $(document).off("click", ".btn-inventario")
+    $(document).on("click", ".btn-inventario", function (event) {
+        const id = $(this).data("id")
+    
+        InventarioFacade.obtenerInventarioSucursal(id).then(function (Inventario) {
+            let sucursal = Inventario.sucursal[0]
+            let productos = Inventario.inventario 
+    
+            let html = `
+            <b>Sucursal: </b>${sucursal.Nombre}<br>
+            <b>Dirección: </b>${sucursal.Direccion}<br>
+            <table class="table table-sm mt-2">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Existencias</th>
+                    </tr>
+                </thead>
+                <tbody>`
+    
+            for (let x in productos) {
+                const producto = productos[x]
+                html += `
+                    <tr>
+                        <td>${producto.Nombre_Producto}</td>
+                        <td>${producto.Descripcion || "Sin descripción"}</td>
+                        <td>${producto.Existencias}</td>
+                    </tr>`
+            }
+    
+            html += `
+                </tbody>
+            </table>`
+    
+            MensajeService.modal(html)
+        })
+    })
+
+
+    // $(document).off("click", ".btn-inventario")
+    // $(document).on("click", ".btn-inventario", function (event) {
+    //     const id = $(this).data("id")
+
+    //     InventarioFacade.obtenerInventarioSucursal(id).then(function (Inventario) {
+    //         let sucursal = Inventario.sucursal[0]
+    //         let html = `<b>Sucursal: </b>${sucursal.Nombre}<br>
+    //         <b> Direccion: </b>${sucursal.Direccion <br>
+    //         <table class="table table-sm">
+    //         <thead>
+    //             <tr>
+    //                 <th>Productos</th>
+    //                 <th>Descripcion</th>
+    //                 <th>Existencias</th>
+    //         </tr></thead><tbody>`
+    //         for (let x in Inventario.productos) {
+    //             const Inventario = Inventario.productos[x]
+    //             html += `<tr>
+    //                 <td>${productos.Nombre_Producto}</td>
+    //                 <td>${productos.Descripcion} </td>
+    //                 <td>${productos.Existencias}</td>
+    //             </tr>`
+    //         }
+    //         html += '</tbody></table>'
+    //         MensajesService.modal(html)
+    //     })
+    // })
 
     $(document).on("click", "#btnBuscarSucursal", function() {
     const busqueda = $("#txtBuscarSucursal").val().trim();
@@ -785,6 +892,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
