@@ -603,29 +603,29 @@ app.service("MensajeService", function () {
     this.toast = toast
 })
 
-app.config( function ($routeProvider, $LocationProvider, $provide) {
-    $provide.decorator("MensajeService", function ($deLegate, $Log){
-        const originalModal = $deLegate.modal
-        const originalPop = $deLegate.pop
-        const originalToast = $deLegate.toast
+app.config( function ($routeProvider, $locationProvider, $provide) {
+    $provide.decorator("MensajeService", function ($delegate, $Log){
+        const originalModal = $delegate.modal
+        const originalPop = $delegate.pop
+        const originalToast = $delegate.toast
 
-        $deLegate.modal = function (msg){
+        $delegate.modal = function (msg){
             originalModal(msg, "Mesaje", [
                 {"html": "Aceptar", "class": "btn btn-lg btn-secondary", defaultButton: true, dismiss: true}
             ])
         }
 
-        $deLegate.pop = function (msg){
+        $delegate.pop = function (msg){
             $(".div-temporal").remove()
             $("body").prepend($("<div />", {
                 class: "div-temporal"
             }))
             originalPop(".div-temporal", msg, "info")
         }
-        $deLegate.toast = function (msg){
+        $delegate.toast = function (msg){
             originalToast(msg, 2)
         }
-        return $deLegate
+        return $delegate
     })
 })
 
@@ -770,6 +770,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
