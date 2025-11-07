@@ -666,6 +666,8 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
         })
     
     }
+
+    Categorias()
     Pusher.logToConsole = true
 
     var pusher = new Pusher("b51b00ad61c8006b2e6f", {
@@ -742,6 +744,7 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
                 <tr>
                     <td>${sucursal.Id_sucursal}</td>
                     <td>${sucursal.Nombre}</td>
+                    <td>${sucursal.Categoria}</td>
                     <td>${sucursal.Direccion}</td>
                     // <td>
                     //     <button class="btn btn-danger btn-eliminar" data-id="${sucursal.Id_sucursal}">Eliminar</button>
@@ -779,6 +782,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
