@@ -703,13 +703,13 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     $http.post("/sucursal/guardar", {
             txtIdsucursal: $scope.txtIdsucursal,
             txtNombre: $scope.txtNombre,
-            txtDescripcio: $scope.txtDescripcion,
+            txtDireccion: $scope.txtDescripcion,
             txtCategoria: $scope.txtCategoria
         }).then(function(respuesta) {
             alert(respuesta.data.mensaje);
             MensajeService.pop("Has agregado una sucursal")
             $scope.txtNombre = "";
-            $scope.txtDescripcio = "";
+            $scope.txtDireccion = "";
             $scope.txtCategoria = "";
             $scope.txtIdsucursal = null;
             buscarsucursal();
@@ -770,6 +770,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
