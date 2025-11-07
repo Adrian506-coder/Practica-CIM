@@ -283,6 +283,60 @@ def guardarsucursal():
     con.close()
     return make_response(jsonify({"mensaje": "Sucursal guardado correctamente"}))
 
+@app.route("/sucursal/<int:id>")
+@login
+def editarsucursal(id):
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT Id_sucursal, Nombre, Direccion, Categoria
+
+    FROM sucursal
+
+    WHERE Id_sucursal = %s
+    """
+    val    = (id,)
+
+    cursor.execute(sql, val)
+    registros = cursor.fetchall()
+    con.close()
+
+    return make_response(jsonify(registros))
+
+@app.route("/productos/inventario/<int:id>")
+@login
+def productosIngredientes(id):
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT 
+        s.Id_sucursal,
+        s.Nombre,
+        p.Id_producto,
+        p.Nombre_Producto,
+        i.Existencias
+    FROM inventario AS i
+    INNER JOIN productos AS p
+        ON i.Id_producto = p.Id_producto
+    INNER JOIN sucursal AS s
+        ON i.Id_sucursal = s.Id_sucursal
+    WHERE i.Id_sucursal = %s
+    ORDER BY p.Nombre_Producto;
+    """
+    val    = (id,)
+
+    cursor.execute(sql, val)
+    registros = cursor.fetchall()
+    if cursor:
+        cursor.close()
+    if con and con.is_connected():
+        con.close()
+
+    return make_response(jsonify(registros))
 # @app.route("/trajes/eliminar", methods=["POST", "GET"])
 # @login
 # def eliminartraje():
@@ -308,27 +362,7 @@ def guardarsucursal():
 
 #     return make_response(jsonify({"status": "ok"}))
 
-# @app.route("/trajes/<int:id>")
-# @login
-# def editarTrajes(id):
-#     if not con.is_connected():
-#         con.reconnect()
 
-#     cursor = con.cursor(dictionary=True)
-#     sql    = """
-#     SELECT IdTraje, nombreTraje, descripcion
-
-#     FROM trajes
-
-#     WHERE IdTraje = %s
-#     """
-#     val    = (id,)
-
-#     cursor.execute(sql, val)
-#     registros = cursor.fetchall()
-#     con.close()
-
-#     return make_response(jsonify(registros))
 
 
 
