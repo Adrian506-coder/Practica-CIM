@@ -622,8 +622,8 @@ app.service("InventarioAPI", function ($q) {
         var deferred = $q.defer()
 
         $.get(`sucursal/inventario/${sucursal}`)
-        .done(function (sucursal){
-            deferred.resolve(sucursal)
+        .done(function (inventario){
+            deferred.resolve(inventario)
         })
         .fail(function (error) {
             deferred.reject(error)
@@ -861,6 +861,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
