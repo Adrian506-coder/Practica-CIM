@@ -602,6 +602,31 @@ app.service("MensajeService", function () {
     this.pop = pop
     this.toast = toast
 })
+app.config( function ($routeProvider, $locationProvider, $provide) {
+    $provide.decorator("MensajeService", function ($delegate, $log){
+        const originalModal = $delegate.modal
+        const originalPop = $delegate.pop
+        const originalToast = $delegate.toast
+
+        $delegate.modal = function (msg){
+            originalModal(msg, "Mesaje", [
+                {"html": "Aceptar", "class": "btn btn-lg btn-secondary", defaultButton: true, dismiss: true}
+            ])
+        }
+
+        $delegate.pop = function (msg){
+            $(".div-temporal").remove()
+            $("body").prepend($("<div />", {
+                class: "div-temporal"
+            }))
+            originalPop(".div-temporal", msg, "info")
+        }
+        $delegate.toast = function (msg){
+            originalToast(msg, 2)
+        }
+        return $delegate
+    })
+})
 app.service("SucursalAPI", function ($q) {
     this.sucursal = function (id) {
         var deferred = $q.defer()
@@ -641,31 +666,6 @@ app.factory("InventarioFacade", function(SucursalAPI, InventarioAPI, $q) {
             })
         }
     };
-})
-app.config( function ($routeProvider, $locationProvider, $provide) {
-    $provide.decorator("MensajeService", function ($delegate, $log){
-        const originalModal = $delegate.modal
-        const originalPop = $delegate.pop
-        const originalToast = $delegate.toast
-
-        $delegate.modal = function (msg){
-            originalModal(msg, "Mesaje", [
-                {"html": "Aceptar", "class": "btn btn-lg btn-secondary", defaultButton: true, dismiss: true}
-            ])
-        }
-
-        $delegate.pop = function (msg){
-            $(".div-temporal").remove()
-            $("body").prepend($("<div />", {
-                class: "div-temporal"
-            }))
-            originalPop(".div-temporal", msg, "info")
-        }
-        $delegate.toast = function (msg){
-            originalToast(msg, 2)
-        }
-        return $delegate
-    })
 })
 
 app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory, MensajeService, InventarioFacade) {
@@ -775,7 +775,8 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
         InventarioFacade.obtenerInventarioSucursal(id).then(function (Inventario) {
             let sucursal = Inventario.sucursal[0]
             let productos = Inventario.inventario 
-    
+            console.log("Datos del InventarioFacade:", Inventario);
+            
             let html = `
             <b>Sucursal: </b>${sucursal.Nombre}<br>
             <b>Dirección: </b>${sucursal.Direccion}<br>
@@ -861,6 +862,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
