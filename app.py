@@ -316,6 +316,7 @@ def sucursalInventario(id):
     SELECT 
         s.Id_sucursal,
         s.Nombre,
+        p.Descripcion,
         p.Id_producto,
         p.Nombre_Producto,
         i.Existencias
@@ -361,6 +362,7 @@ def sucursalInventario(id):
 #     pusherProductos()
 
 #     return make_response(jsonify({"status": "ok"}))
+
 
 
 
