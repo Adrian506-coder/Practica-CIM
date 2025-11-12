@@ -1,9 +1,10 @@
-{% for sucursal in sucursal %}
+{% for inventario in inventario %}
 <tr>
-    <td>{{ sucursal.Id_sucursal }}</td>
-    <td>{{ sucursal.Nombre }}</td>
-    <td>{{ sucursal.Categoria }}</td>
-    <td>{{ sucursal.Direccion }}</td>
-    <td><button class="btn btn-danger  btn-eliminar" data-id="{{ sucursal.Id_sucursal }}">Eliminar</button></td>
+    <td>{{ inventario.Id_sucursal }}</td>
+    <td>{{ inventario.Nombre }}</td>
+    <td>{{ inventario.Descripcion }}</td>
+    <td>{{ inventario.Nombre_Producto }}</td>
+    <td>{{ inventario.Existencias }}</td>
+    <td><button class="btn btn-danger  btn-eliminar" data-id="{{ inventario.Id_inventario }}">Eliminar</button></td>
 </tr>
 {% endfor %}
