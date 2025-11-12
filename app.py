@@ -354,8 +354,7 @@ def sucursalInventario(id):
         ON i.Id_producto = p.Id_producto
     INNER JOIN sucursal AS s
         ON i.Id_sucursal = s.Id_sucursal
-    WHERE i.Id_sucursal = %s
-    ORDER BY p.Nombre_Producto;
+    ORDER BY p.Nombre_Producto
     """
     val    = (id,)
 
@@ -391,6 +390,7 @@ def sucursalInventario(id):
 #     pusherProductos()
 
 #     return make_response(jsonify({"status": "ok"}))
+
 
 
 
