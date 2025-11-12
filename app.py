@@ -162,6 +162,35 @@ def tbodysucursal():
 
     return render_template("tbodysucursal.html", sucursal=registros)
 
+@app.route("/tbodyinventario")
+@login
+def tbodysucursal():
+    if not con.is_connected():
+        con.reconnect()
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT 
+        s.Id_sucursal,
+        s.Nombre,
+        p.Descripcion,
+        p.Id_producto,
+        p.Nombre_Producto,
+        i.Existencias
+    FROM inventario AS i
+    INNER JOIN productos AS p
+        ON i.Id_producto = p.Id_producto
+    INNER JOIN sucursal AS s
+        ON i.Id_sucursal = s.Id_sucursal
+    WHERE i.Id_sucursal = %s
+    ORDER BY p.Nombre_Producto;
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+
+    return render_template("tbodyinventario.html", inventario=registros)
+
+
 @app.route("/sucursal/buscar", methods=["GET"])
 @login
 def buscarsucursal():
@@ -362,6 +391,7 @@ def sucursalInventario(id):
 #     pusherProductos()
 
 #     return make_response(jsonify({"status": "ok"}))
+
 
 
 
