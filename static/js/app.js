@@ -671,8 +671,55 @@ app.factory("InventarioFacade", function(SucursalAPI, InventarioAPI, $q) {
         }
     };
 })
+app.service("InventarioMediator", function (InventarioFacade, MensajeService, $q) {
+    this.mostrarInventarioSucursal = function (idSucursal) {
+        const deferred = $q.defer()
 
-app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory, MensajeService, InventarioFacade) {
+        InventarioFacade.obtenerInventarioSucursal(idSucursal)
+        .then(function (data) {
+            const sucursal  = data.sucursal[0]
+            const productos = data.inventario
+
+            let html = `
+                <b>Sucursal: </b>${sucursal.Nombre}<br>
+                <b>Dirección: </b>${sucursal.Direccion}<br>
+                <table class="table table-sm mt-2">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Existencias</th>
+                        </tr>
+                    </thead>
+                    <tbody>`
+
+            for (let x in productos) {
+                const producto = productos[x]
+                html += `
+                    <tr>
+                        <td>${producto.Nombre_Producto}</td>
+                        <td>${producto.Descripcion || "Sin descripción"}</td>
+                        <td>${producto.Existencias}</td>
+                    </tr>`
+            }
+
+            html += `</tbody></table>`
+
+            MensajeService.modal(html)
+            deferred.resolve()
+        })
+        .catch(function (error) {
+            console.error("Error en InventarioMediator:", error)
+            MensajeService.toast("No se pudo obtener el inventario de la sucursal")
+            deferred.reject(error)
+        })
+
+        return deferred.promise
+    }
+})
+
+
+app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionService, CategoriaFactory, MensajeService, InventarioFacade, InventarioMediator) {
     function buscarsucursal() {
         $.get("/tbodysucursal", function (trsHTML) {
             $("#tbodySucursal").html(trsHTML)
@@ -774,39 +821,39 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
     $(document).off("click", ".btn-inventario")
     $(document).on("click", ".btn-inventario", function (event) {
         const id = $(this).data("id")
-    
-        InventarioFacade.obtenerInventarioSucursal(id).then(function (Inventario) {
-            let sucursal = Inventario.sucursal[0]
-            let productos = Inventario.inventario 
-            console.log("Datos del InventarioFacade:", Inventario);
+        InventarioMediator.mostrarInventarioSucursal(id)
+        // InventarioFacade.obtenerInventarioSucursal(id).then(function (Inventario) {
+        //     let sucursal = Inventario.sucursal[0]
+        //     let productos = Inventario.inventario 
+        //     console.log("Datos del InventarioFacade:", Inventario);
             
-            let html = `
-            <b>Sucursal: </b>${sucursal.Nombre}<br>
-            <b>Dirección: </b>${sucursal.Direccion}<br>
-            <table class="table table-sm mt-2">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Descripción</th>
-                        <th>Existencias</th>
-                    </tr>
-                </thead>
-                <tbody>`
+        //     let html = `
+        //     <b>Sucursal: </b>${sucursal.Nombre}<br>
+        //     <b>Dirección: </b>${sucursal.Direccion}<br>
+        //     <table class="table table-sm mt-2">
+        //         <thead>
+        //             <tr>
+        //                 <th>Producto</th>
+        //                 <th>Descripción</th>
+        //                 <th>Existencias</th>
+        //             </tr>
+        //         </thead>
+        //         <tbody>`
     
-            for (let x in productos) {
-                const producto = productos[x]
-                html += `
-                    <tr>
-                        <td>${producto.Nombre_Producto}</td>
-                        <td>${producto.Descripcion || "Sin descripción"}</td>
-                        <td>${producto.Existencias}</td>
-                    </tr>`
-            }
+        //     for (let x in productos) {
+        //         const producto = productos[x]
+        //         html += `
+        //             <tr>
+        //                 <td>${producto.Nombre_Producto}</td>
+        //                 <td>${producto.Descripcion || "Sin descripción"}</td>
+        //                 <td>${producto.Existencias}</td>
+        //             </tr>`
+        //     }
     
-            html += ` </tbody> </table> `
+        //     html += ` </tbody> </table> `
     
-            MensajeService.modal(html)
-        })
+        //     MensajeService.modal(html)
+        // })
     })
 
     $(document).on("click", "#btnBuscarSucursal", function() {
@@ -937,21 +984,3 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
