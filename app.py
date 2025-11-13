@@ -138,6 +138,11 @@ def preferencias():
 def sucursal():
     return render_template("sucursal.html")
 
+@app.route("/inventario")
+@login
+def sucursal():
+    return render_template("inventario.html")
+
 @app.route("/tbodysucursal")
 @login
 def tbodysucursal():
@@ -390,6 +395,7 @@ def sucursalInventario(id):
 #     pusherProductos()
 
 #     return make_response(jsonify({"status": "ok"}))
+
 
 
 
