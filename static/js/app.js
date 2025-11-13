@@ -880,7 +880,7 @@ app.controller("inventarioCtrl", function ($scope, $http) {
             for (let x in inventario) {
                 const inventario = inventario[x]
 
-                $("#tbodyVentas").append(`<tr>
+                $("#tbodyInventario").append(`<tr>
                     <td>${ inventario.Id_sucursal }</td>
                     <td>${ inventario.Nombre }</td>
                     <td>${ inventario.Descripcion }</td>
@@ -898,6 +898,7 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
