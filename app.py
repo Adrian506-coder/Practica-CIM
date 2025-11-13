@@ -137,12 +137,7 @@ def preferencias():
 @login
 def sucursal():
     return render_template("sucursal.html")
-
-@app.route("/inventario")
-@login
-def sucursal():
-    return render_template("inventario.html")
-
+    
 @app.route("/tbodysucursal")
 @login
 def tbodysucursal():
@@ -166,34 +161,6 @@ def tbodysucursal():
     registros = cursor.fetchall()
 
     return render_template("tbodysucursal.html", sucursal=registros)
-
-@app.route("/tbodyinventario")
-@login
-def tbodyinventario():
-    if not con.is_connected():
-        con.reconnect()
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT 
-        s.Id_sucursal,
-        s.Nombre,
-        p.Descripcion,
-        p.Id_producto,
-        p.Nombre_Producto,
-        i.Existencias
-    FROM inventario AS i
-    INNER JOIN productos AS p
-        ON i.Id_producto = p.Id_producto
-    INNER JOIN sucursal AS s
-        ON i.Id_sucursal = s.Id_sucursal
-    ORDER BY p.Nombre_Producto;
-    """
-
-    cursor.execute(sql)
-    registros = cursor.fetchall()
-
-    return render_template("tbodyinventario.html", inventario=registros)
-
 
 @app.route("/sucursal/buscar", methods=["GET"])
 @login
@@ -396,18 +363,35 @@ def sucursalInventario(id):
 
 #     return make_response(jsonify({"status": "ok"}))
 
+@app.route("/inventario")
+@login
+def inventario():
+    return render_template("inventario.html")
 
+@app.route("/tbodyinventario")
+@login
+def tbodyinventario():
+    if not con.is_connected():
+        con.reconnect()
+    cursor = con.cursor(dictionary=True)
+    sql    = """
+    SELECT 
+        s.Id_sucursal,
+        s.Nombre,
+        p.Descripcion,
+        p.Id_producto,
+        p.Nombre_Producto,
+        i.Existencias
+    FROM inventario AS i
+    INNER JOIN productos AS p
+        ON i.Id_producto = p.Id_producto
+    INNER JOIN sucursal AS s
+        ON i.Id_sucursal = s.Id_sucursal
+    ORDER BY p.Nombre_Producto;
+    """
 
+    cursor.execute(sql)
+    registros = cursor.fetchall()
 
-
-
-
-
-
-
-
-
-
-
-
+    return render_template("tbodyinventario.html", inventario=registros)
 
