@@ -473,3 +473,21 @@ def eliminarinventario():
     pusherSucursal()
 
     return make_response(jsonify({"status": "ok", "mensaje": "Inventario eliminado correctamente"}))
+
+@app.route("/log", methods=["GET"])
+def logInventario():
+    args = request.args
+    actividad = args.get("actividad", "Sin actividad")
+    descripcion = args.get("descripcion", "Sin descripción")
+
+    tz = pytz.timezone("America/Matamoros")
+    ahora = datetime.datetime.now(tz)
+    fechaHoraStr = ahora.strftime("%Y-%m-%d %H:%M:%S")
+
+    with open("log-inventario.txt", "a", encoding="utf-8") as f:
+        f.write(f"{actividad}\t{descripcion}\t{fechaHoraStr}\n")
+
+    with open("log-inventario.txt", "r", encoding="utf-8") as f:
+        log = f.read()
+
+    return log
