@@ -62,6 +62,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/sucursal",
         controller: "sucursalCtrl"
     })
+    .when("/inventario", {
+        templateUrl: "/inventario",
+        controller: "inventarioCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -703,7 +707,6 @@ app.controller("sucursalCtrl", function ($scope, $http, $rootScope, SesionServic
             console.log("Supermercado Factory", categoriaSupermercado.getInfo())
             $scope.categoriaSupermercado = categoriaSupermercado
         })
-    
     }
 
     Categorias()
@@ -859,9 +862,43 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
     // });
 })
 
+app.controller("inventarioCtrl", function ($scope, $http) {
+    function buscarinventario() {
+        $("#tbodyInventario").html(`<tr>
+            <th colspan="5" class="text-center">
+                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </th>
+        </tr>`)
+        $.get("inventario/buscar", {
+            busqueda: ""
+        }, function (inventario) {
+            enableAll()
+            $scope.totalinventario = inventario.length
+            $("#tbodyInventario").html("")
+            for (let x in inventario) {
+                const inventario = inventario[x]
+
+                $("#tbodyVentas").append(`<tr>
+                    <td>${ inventario.Id_sucursal }</td>
+                    <td>${ inventario.Nombre }</td>
+                    <td>${ inventario.Descripcion }</td>
+                    <td>${ inventario.Nombre_Producto }</td>
+                    <td>${ inventario.Existencias }</td>
+                    <td><button class="btn btn-danger  btn-eliminar" data-id="${ inventario.Id_inventario }">Eliminar</button></td>
+                </tr>`)
+            }
+        })
+        disableAll()
+    }
+
+    buscarinventario()
+
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
