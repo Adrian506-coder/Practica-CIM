@@ -863,41 +863,81 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
 })
 
 app.controller("inventarioCtrl", function ($scope, $http) {
-    function buscarinventario() {
+    function buscarInventario() {
         $("#tbodyInventario").html(`<tr>
-            <th colspan="5" class="text-center">
+            <th colspan="6" class="text-center">
                 <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                     <span class="visually-hidden">Cargando...</span>
                 </div>
             </th>
         </tr>`)
-        $.get("inventario/buscar", {
-            busqueda: ""
-        }, function (inventario) {
-            enableAll()
-            $scope.totalinventario = inventario.length
-            $("#tbodyInventario").html("")
-            for (let x in inventario) {
-                const inventario = inventario[x]
 
-                $("#tbodyInventario").append(`<tr>
-                    <td>${ inventario.Id_sucursal }</td>
-                    <td>${ inventario.Nombre }</td>
-                    <td>${ inventario.Descripcion }</td>
-                    <td>${ inventario.Nombre_Producto }</td>
-                    <td>${ inventario.Existencias }</td>
-                    <td><button class="btn btn-danger  btn-eliminar" data-id="${ inventario.Id_inventario }">Eliminar</button></td>
-                </tr>`)
+        $.get("inventario/buscar", { busqueda: "" }, function (inventarios) {
+            enableAll()
+            $scope.totalInventario = inventarios.length
+            $("#tbodyInventario").html("")
+
+            for (let x in inventarios) {
+                const inv = inventarios[x]
+
+                $("#tbodyInventario").append(`
+                    <tr>
+                        <td>${inv.Id_sucursal}</td>
+                        <td>${inv.Nombre}</td>
+                        <td>${inv.Descripcion}</td>
+                        <td>${inv.Nombre_Producto}</td>
+                        <td>${inv.Existencias}</td>
+                        <td>
+                            <button class="btn btn-danger btn-eliminar while-waiting" data-id="${inv.Id_inventario}">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `)
             }
         })
         disableAll()
     }
 
-    buscarinventario()
+    buscarInventario()
+
+    $scope.$watch("totalInventario", function (nuevo, anterior) {
+        if (nuevo < anterior) {
+            $.get("log", {
+                actividad: "Eliminación de inventario.",
+                descripcion: `Se eliminó un registro del inventario.`
+            })
+        }
+    })
+
+    $(document).off("click", ".btn-eliminar")
+    $(document).on("click", ".btn-eliminar", function () {
+        const id = $(this).data("id")
+
+        modal("¿Eliminar este registro del inventario?", 'Confirmación', [
+            { html: "No", class: "btn btn-secondary", dismiss: true },
+            {
+                html: "Sí",
+                class: "btn btn-danger while-waiting",
+                defaultButton: true,
+                fun: function () {
+                    $.post(`inventario/eliminar`, { id: id }, function (respuesta) {
+                        enableAll()
+                        closeModal()
+                        buscarInventario()
+                    })
+                    disableAll()
+                }
+            }
+        ])
+    })
+})
+
 
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
