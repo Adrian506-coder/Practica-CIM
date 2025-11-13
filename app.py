@@ -381,6 +381,7 @@ def tbodyinventario():
         p.Descripcion,
         p.Id_producto,
         p.Nombre_Producto,
+        i.Id_inventario,
         i.Existencias
     FROM inventario AS i
     INNER JOIN productos AS p
@@ -412,6 +413,7 @@ def buscarinventario():
         p.Descripcion,
         p.Id_producto,
         p.Nombre_Producto,
+        i.Id_inventario,
         i.Existencias
     FROM inventario AS i
     INNER JOIN productos AS p
