@@ -439,3 +439,4 @@ def buscarinventario():
     return make_response(jsonify(registros))
 
 
+
