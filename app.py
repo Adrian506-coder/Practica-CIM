@@ -387,11 +387,55 @@ def tbodyinventario():
         ON i.Id_producto = p.Id_producto
     INNER JOIN sucursal AS s
         ON i.Id_sucursal = s.Id_sucursal
-    ORDER BY p.Nombre_Producto;
+    ORDER BY p.Nombre_Producto
     """
 
     cursor.execute(sql)
     registros = cursor.fetchall()
 
     return render_template("tbodyinventario.html", inventario=registros)
+
+@app.route("/inventario/buscar", methods=["GET"])
+@login
+def buscarinventario():
+    if not con.is_connected():
+        con.reconnect()
+
+    args = request.args
+    busqueda = f"%{args.get('busqueda', '')}%"
+
+    cursor = con.cursor(dictionary=True)
+    sql = """
+    SELECT 
+        s.Id_sucursal,
+        s.Nombre,
+        p.Descripcion,
+        p.Id_producto,
+        p.Nombre_Producto,
+        i.Existencias
+    FROM inventario AS i
+    INNER JOIN productos AS p
+        ON i.Id_producto = p.Id_producto
+    INNER JOIN sucursal AS s
+        ON i.Id_sucursal = s.Id_sucursal
+    WHERE s.Nombre LIKE %s
+       OR p.Descripcion LIKE %s
+       OR p.Nombre_Producto LIKE %s
+       OR i.Existencias LIKE %s
+    ORDER BY p.Id_producto DESC
+    LIMIT 10 OFFSET 0;
+    """
+    val = (busqueda, busqueda, busqueda, busqueda)
+
+    try:
+        cursor.execute(sql, val)
+        registros = cursor.fetchall()
+    except mysql.connector.errors.ProgrammingError as error:
+        print(f"Ocurrió un error de programación en MySQL: {error}")
+        registros = []
+    finally:
+        cursor.close()
+
+    return make_response(jsonify(registros))
+
 
