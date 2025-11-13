@@ -438,5 +438,36 @@ def buscarinventario():
 
     return make_response(jsonify(registros))
 
+@app.route("/inventario/eliminar", methods=["POST", "GET"])
+@login
+def eliminarinventario():
+    if not con.is_connected():
+        con.reconnect()
 
+    if request.method == "POST":
+        Id_inventario = request.form.get("id")
+    else:
+        Id_inventario = request.args.get("id")
 
+    if not Id_inventario:
+        return jsonify({"error": "Falta el parámetro id"}), 400
+
+    Id_inventario = int(Id_inventario)
+
+    cursor = con.cursor()
+    sql = "DELETE FROM inventario WHERE Id_inventario = %s"
+    val = (Id_inventario,)
+
+    try:
+        cursor.execute(sql, val)
+        con.commit()
+    except Exception as e:
+        con.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        con.close()
+
+    pusherSucursal()
+
+    return make_response(jsonify({"status": "ok", "mensaje": "Inventario eliminado correctamente"}))
