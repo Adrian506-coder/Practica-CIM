@@ -918,7 +918,7 @@ app.controller("inventarioCtrl", function ($scope, $http) {
                 </div>
             </th>
         </tr>`)
-
+        
         $.get("inventario/buscar", { busqueda: "" }, function (inventarios) {
             enableAll()
             $scope.totalInventario = inventarios.length
@@ -957,6 +957,32 @@ app.controller("inventarioCtrl", function ($scope, $http) {
         }
     })
 
+    $scope.txtIdinventario = null;
+    $scope.guardarinventario = function() {
+        // console.log({
+        //     txtIdsucursal: $scope.txtIdsucursal,
+        //     txtNombre: $scope.txtNombre,
+        //     txtDireccion: $scope.txtDireccion,
+        //     txtCategoria: $scope.txtCategoria
+        // });
+    $http.post("/inventario/guardar", {
+            txtIdinventario: $scope.txtIdinventario,
+            txtIdsucursal: $scope.txtIdsucursal,
+            txtIdproducto: $scope.txtIdproducto,
+            txtExistencia: $scope.txtExistencia
+        }).then(function(respuesta) {
+            alert(respuesta.data.mensaje);
+            MensajeService.pop("Has agregado un inventario")
+            $scope.txtIdsucursal = "";
+            $scope.txtIdproducto = "";
+            $scope.txtExistencia = "";
+            $scope.txtIdinventario = null;
+            buscarInventario();
+        }, function(error) {
+            console.error(error);
+        });
+    };
+
     $(document).off("click", ".btn-eliminar")
     $(document).on("click", ".btn-eliminar", function () {
         const id = $(this).data("id")
@@ -984,3 +1010,4 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
