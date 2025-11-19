@@ -77,7 +77,7 @@ class ComprasDAO:
                 s.Nombre  AS Sucursal
             FROM compras c
             JOIN productos   p  ON c.Id_Producto   = p.Id_producto
-            JOIN Proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
+            JOIN proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
             JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
         """
         cursor.execute(sql)
@@ -657,6 +657,7 @@ def compras_eliminar():
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"status": "ok", "mensaje": "Compra eliminada correctamente"})
+
 
 
 
