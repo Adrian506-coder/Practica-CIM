@@ -947,7 +947,18 @@ app.controller("inventarioCtrl", function ($scope, $http) {
     }
 
     buscarInventario()
+    Pusher.logToConsole = true
 
+    var pusher = new Pusher("b51b00ad61c8006b2e6f", {
+      cluster: "us2"
+    })
+
+    var channel = pusher.subscribe("canalinventario")
+    channel.bind("eventoinventario", function(data) {
+        buscarInventario()
+    })
+
+    
     $scope.$watch("totalInventario", function (nuevo, anterior) {
         if (nuevo < anterior) {
             $.get("log", {
@@ -1010,4 +1021,5 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
