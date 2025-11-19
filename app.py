@@ -75,7 +75,7 @@ class ComprasDAO:
                 p.Nombre_Producto,
                 pr.Nombre AS Proveedor,
                 s.Nombre  AS Sucursal
-            FROM Compras c
+            FROM compras c
             JOIN productos   p  ON c.Id_Producto   = p.Id_producto
             JOIN Proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
             JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
@@ -88,7 +88,7 @@ class ComprasDAO:
     def eliminar(self, id_compra):
         self._reconnect()
         cursor = con.cursor()
-        sql = "DELETE FROM Compras WHERE Id_Compra = %s"
+        sql = "DELETE FROM compras WHERE Id_Compra = %s"
         cursor.execute(sql, (id_compra,))
         con.commit()
         cursor.close()
@@ -616,7 +616,7 @@ def tbodycompra():
         p.Nombre_Producto,
         pr.Nombre AS Proveedor,
         s.Nombre  AS Sucursal
-    FROM Compras c
+    FROM compras c
     JOIN productos   p  ON c.Id_Producto   = p.Id_producto
     JOIN proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
     JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
@@ -657,6 +657,7 @@ def compras_eliminar():
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"status": "ok", "mensaje": "Compra eliminada correctamente"})
+
 
 
 
