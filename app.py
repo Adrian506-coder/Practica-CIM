@@ -79,81 +79,11 @@ class ComprasDAO:
             JOIN productos   p  ON c.Id_Producto   = p.Id_producto
             JOIN Proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
             JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
-            ORDER BY c.FechaCompra DESC
-            LIMIT 50;
         """
         cursor.execute(sql)
         registros = cursor.fetchall()
         cursor.close()
         return registros
-
-    def crear(self, compra):
-        """
-        compra = {
-            "Id_Proveedor": int,
-            "Id_Sucursal": int,
-            "Id_Producto": int,
-            "Cantidad": int,
-            "Motivo": str | None
-        }
-        """
-        self._reconnect()
-        cursor = con.cursor()
-
-        try:
-            # 1) Insertar compra (historial)
-            sql_compra = """
-                INSERT INTO Compras
-                    (Id_Proveedor, Id_Sucursal, Id_Producto, Cantidad, FechaCompra, Motivo)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """
-            fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cursor.execute(sql_compra, (
-                compra["Id_Proveedor"],
-                compra["Id_Sucursal"],
-                compra["Id_Producto"],
-                compra["Cantidad"],
-                fecha,
-                compra["Motivo"]
-            ))
-            id_compra = cursor.lastrowid
-
-            # 2) Actualizar/incrementar inventario
-            sql_sel = """
-                SELECT Id_inventario, Existencias
-                FROM inventario
-                WHERE Id_sucursal = %s AND Id_producto = %s
-            """
-            cursor.execute(sql_sel, (compra["Id_Sucursal"], compra["Id_Producto"]))
-            fila = cursor.fetchone()
-
-            if fila:
-                nuevas = fila[1] + int(compra["Cantidad"])
-                sql_upd = """
-                    UPDATE inventario
-                    SET Existencias = %s
-                    WHERE Id_inventario = %s
-                """
-                cursor.execute(sql_upd, (nuevas, fila[0]))
-            else:
-                sql_ins_inv = """
-                    INSERT INTO inventario (Id_sucursal, Id_producto, Existencias)
-                    VALUES (%s, %s, %s)
-                """
-                cursor.execute(sql_ins_inv, (
-                    compra["Id_Sucursal"],
-                    compra["Id_Producto"],
-                    compra["Cantidad"]
-                ))
-
-            con.commit()
-            cursor.close()
-            return id_compra
-
-        except Exception as e:
-            con.rollback()
-            cursor.close()
-            raise e
 
     def eliminar(self, id_compra):
         self._reconnect()
@@ -670,6 +600,34 @@ def logInventario():
 def compras():
     return render_template("compras.html")
 
+@app.route("/tbodycompra")
+@login
+def tbodycompra():
+    if not con.is_connected():
+        con.reconnect()
+
+    cursor = con.cursor(dictionary=True)
+    sql = """
+    SELECT 
+        c.Id_Compra,
+        c.Cantidad,
+        c.FechaCompra,
+        c.Motivo,
+        p.Nombre_Producto,
+        pr.Nombre AS Proveedor,
+        s.Nombre  AS Sucursal
+    FROM Compras c
+    JOIN productos   p  ON c.Id_Producto   = p.Id_producto
+    JOIN proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
+    JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
+    """
+
+    cursor.execute(sql)
+    registros = cursor.fetchall()
+    cursor.close()
+
+    return render_template("tbodycompra.html", compras=registros)
+
 @app.route("/compras/listar", methods=["GET"])
 @login
 def compras_listar():
@@ -679,41 +637,6 @@ def compras_listar():
         return make_response(jsonify(registros))
     except Exception as e:
         return make_response(jsonify({"error": str(e)}), 500)
-
-
-@app.route("/compras/guardar", methods=["POST"])
-@login
-def compras_guardar():
-    data = request.get_json(silent=True) or request.form
-
-    Id_Proveedor = data.get("Id_Proveedor")
-    Id_Sucursal  = data.get("Id_Sucursal")
-    Id_Producto  = data.get("Id_Producto")
-    Cantidad     = data.get("Cantidad")
-    Motivo       = data.get("Motivo")
-
-    if not Id_Proveedor or not Id_Sucursal or not Id_Producto or not Cantidad:
-        return jsonify({"error": "Faltan datos obligatorios"}), 400
-
-    compra = {
-        "Id_Proveedor": int(Id_Proveedor),
-        "Id_Sucursal":  int(Id_Sucursal),
-        "Id_Producto":  int(Id_Producto),
-        "Cantidad":     int(Cantidad),
-        "Motivo":       Motivo
-    }
-
-    dao = ComprasDAO()
-    try:
-        nuevo_id = dao.crear(compra)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-    return jsonify({
-        "status": "ok",
-        "mensaje": "Compra registrada y inventario actualizado",
-        "Id_Compra": nuevo_id
-    })
 
 
 @app.route("/compras/eliminar", methods=["POST", "GET"])
@@ -734,6 +657,7 @@ def compras_eliminar():
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"status": "ok", "mensaje": "Compra eliminada correctamente"})
+
 
 
 
