@@ -66,6 +66,10 @@ app.config(function ($routeProvider, $locationProvider) {
         templateUrl: "/inventario",
         controller: "inventarioCtrl"
     })
+    .when("/compras", {
+        templateUrl: "/compras",
+        controller: "comprasCtrl"
+    })
     .otherwise({
         redirectTo: "/"
     })
@@ -1092,7 +1096,6 @@ app.controller("comprasCtrl", function($scope, $http) {
 
     cargarCompras();
 
-    // ELIMINAR COMPRA
     $(document).on("click", ".btn-eliminar-compra", function () {
         const id = $(this).data("id");
 
@@ -1120,6 +1123,7 @@ app.controller("comprasCtrl", function($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
