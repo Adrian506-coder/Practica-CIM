@@ -1,0 +1,59 @@
+<form id="frmcompra" method="post">
+    <div class="mb-1">
+        <input type="hidden" id="txtIdCompra" name="txtIdCompra" ng-model="txtIdCompra">
+    </div>
+
+    <div class="mb-1">
+        <label>Id proveedor</label>
+        <input type="text" class="form-control" id="txtIdProveedor" name="txtIdProveedor" ng-model="txtIdProveedor">
+    </div>
+
+    <div class="mb-1">
+        <label>Id sucursal</label>
+        <input type="text" class="form-control" id="txtIdSucursal" name="txtIdSucursal" ng-model="txtIdSucursal">
+    </div>
+
+    <div class="mb-1">
+        <label>Id producto</label>
+        <input type="text" class="form-control" id="txtIdProducto" name="txtIdProducto" ng-model="txtIdProducto">
+    </div>
+
+    <div class="mb-1">
+        <label>Cantidad comprada</label>
+        <input type="number" class="form-control" id="txtCantidad" name="txtCantidad" ng-model="txtCantidad">
+    </div>
+
+    <div class="mb-1">
+        <label>Motivo / Nota</label>
+        <input type="text" class="form-control" id="txtMotivo" name="txtMotivo" ng-model="txtMotivo">
+    </div>
+
+    <div class="mb-1 text-end">
+        <button type="button" class="btn btn-primary" ng-click="guardarCompra()">Guardar</button>
+    </div>
+</form>
+
+<!-- Buscador -->
+<div class="mb-3 input-group">
+    <input type="text" class="form-control" id="txtBuscarCompras" placeholder="Buscar compras">
+    <button class="btn btn-secondary" id="btnBuscarCompras" type="button">Buscar</button>
+</div>
+
+<!-- Tabla -->
+<div class="table-responsive">
+    <table class="table table-sm">
+        <thead class="table-active">
+            <tr>
+                <th>Id Compra</th>
+                <th>Proveedor</th>
+                <th>Sucursal</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tbodyCompras"></tbody>
+    </table>
+</div>
