@@ -901,7 +901,7 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
         if(confirm("¿Deseas eliminar esta sucursal?")) {
             $.post("/sucursal/eliminar", {id: id}, function(response){
                 console.log("Sucursal eliminada correctamente");
-                 buscarsucursal()
+                 buscarsucursal();
             }).fail(function(xhr){
                 console.error("Error al eliminar sucursal:", xhr.responseText);
             });
@@ -1057,6 +1057,7 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
