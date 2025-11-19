@@ -1,0 +1,19 @@
+{% for compra in compras %}
+<tr>
+    <td>{{ compra.Id_Compra }}</td>
+    <td>{{ compra.Proveedor }}</td>
+    <td>{{ compra.Sucursal }}</td>
+    <td>{{ compra.Nombre_Producto }}</td>
+    <td>{{ compra.Cantidad }}</td>
+    <td>{{ compra.FechaCompra }}</td>
+    <td>{{ compra.Motivo }}</td>
+    <td>
+        <button 
+            class="btn btn-danger btn-eliminar-compra while-waiting"
+            data-id="{{ compra.Id_Compra }}"
+        >
+            Eliminar
+        </button>
+    </td>
+</tr>
+{% endfor %}
