@@ -994,6 +994,42 @@ app.controller("inventarioCtrl", function ($scope, $http) {
         });
     };
 
+    $(document).on("click", "#btnBuscarInventario", function() {
+    const busqueda = $("#txtBuscarInventario").val().trim();
+
+    if (busqueda === "") {
+        buscarInventario(); 
+        return;
+    }
+
+    $.get("/inventario/buscar", { busqueda: busqueda }, function(registros) {
+        let trsHTML = "";
+        registros.forEach(inventario => {
+            trsHTML += `
+                <tr>
+                    <td>${inventario.Id_inventario}</td>
+                    <td>${inventario.Nombre}</td>
+                    <td>${inventario.Descripcion}</td>
+                    <td>${inventario.Nombre_Producto}</td>
+                    <td>${inventario.Existencias}</td>
+                    <td>
+                        <button class="btn btn-danger btn-eliminar" data-id="${inventario.Id_inventario}">Eliminar</button>
+                    </td>
+                </tr>
+                `;
+            });
+            $("#tbodyInventario").html(trsHTML);
+        }).fail(function(xhr){
+            console.error("Error al buscar inventario:", xhr.responseText);
+        });
+    });
+    
+    $("#txtBuscarSucursal").on("keypress", function(e) {
+        if(e.which === 13) {
+            $("#btnBuscarSucursal").click();
+        }
+    });
+    
     $(document).off("click", ".btn-eliminar")
     $(document).on("click", ".btn-eliminar", function () {
         const id = $(this).data("id")
@@ -1021,5 +1057,6 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
