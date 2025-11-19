@@ -440,6 +440,51 @@ def buscarinventario():
 
     return make_response(jsonify(registros))
 
+@app.route("/inventario/guardar", methods=["POST", "GET"])
+@login
+def guardarinventario():
+    if not con.is_connected():
+        con.reconnect()
+
+    if request.method == "POST":
+        data = request.get_json(silent=True) or request.form
+        txtIdinventario = data.get("txtIdinventario")
+        txtIdsucursal = data.get("txtIdsucursal")
+        txtIdproducto = data.get("txtIdproducto")
+        txtExistencia = data.get("txtExistencia")
+    else: 
+        txtIdsucursal = request.args.get("txtIdsucursal")
+        txtIdproducto = request.args.get("txtIdproducto")
+        txtExistencia = request.args.get("txtExistencia")
+    if not txtIdsucursal or not txtIdproducto  or not txtExistencia:
+        return jsonify({"error": "Faltan parámetros"}), 400
+        
+    cursor = con.cursor()
+    
+    if txtIdinventario:
+        sql = """
+        UPDATE  inventario
+            SET Id_sucursal = %s,
+            Id_producto = %s,
+            Existencias = %s
+        WHERE Id_inventario = %s
+        """
+        cursor.execute(sql, (txtIdsucursal, txtIdproducto, txtExistencia, txtIdinventario))
+        
+        pusherSucursal()
+    else: 
+        sql = """
+        INSERT INTO inventario  (Id_sucursal, Id_producto, Existencias)
+        VALUES (%s, %s, %s)
+        """
+        cursor.execute(sql, (txtIdsucursal, txtIdproducto, txtExistencia))
+
+        pusherSucursal()
+
+    con.commit()
+    con.close()
+    return make_response(jsonify({"mensaje": "Sucursal guardado correctamente"}))
+    
 @app.route("/inventario/eliminar", methods=["POST", "GET"])
 @login
 def eliminarinventario():
@@ -491,3 +536,4 @@ def logInventario():
         log = f.read()
 
     return log
+
