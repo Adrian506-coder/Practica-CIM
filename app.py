@@ -351,31 +351,32 @@ def sucursalInventario(id):
         con.close()
 
     return make_response(jsonify(registros))
-# @app.route("/trajes/eliminar", methods=["POST", "GET"])
-# @login
-# def eliminartraje():
-#     if not con.is_connected():
-#         con.reconnect()
+@app.route("/sucursal/eliminar", methods=["POST", "GET"])
+@login
+def eliminarsucursal():
+    if not con.is_connected():
+        con.reconnect()
 
-#     if request.method == "POST":
-#         IdTraje = request.form.get("id")
-#     else:
-#         IdTraje = request.args.get("id")
+    if request.method == "POST":
+        Id_sucursal  = request.form.get("id")
+    else:
+        Id_sucursal  = request.args.get("id")
 
-#     IdTraje = int(IdTraje)
+    Id_sucursal  = int(Id_sucursal)
     
-#     cursor = con.cursor()
-#     sql = "DELETE FROM trajes WHERE IdTraje = %s"
-#     val = (IdTraje,)
+    cursor = con.cursor()
+    sql = "DELETE FROM sucursal WHERE Id_sucursal = %s"
+    val = (IdTraje,)
 
-#     cursor.execute(sql, val)
-#     con.commit()
-#     con.close()
+    cursor.execute(sql, val)
+    con.commit()
+    con.close()
 
-#     pusherProductos()
+    pusherSucursal()
 
-#     return make_response(jsonify({"status": "ok"}))
-
+    return make_response(jsonify({"status": "ok"}))
+    
+# inventario
 @app.route("/inventario")
 @login
 def inventario():
@@ -549,5 +550,6 @@ def logInventario():
         log = f.read()
 
     return log
+
 
 
