@@ -366,7 +366,7 @@ def eliminarsucursal():
     
     cursor = con.cursor()
     sql = "DELETE FROM sucursal WHERE Id_sucursal = %s"
-    val = (IdTraje,)
+    val = (Id_sucursal,)
 
     cursor.execute(sql, val)
     con.commit()
