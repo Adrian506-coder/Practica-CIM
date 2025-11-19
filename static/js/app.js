@@ -1053,10 +1053,74 @@ app.controller("inventarioCtrl", function ($scope, $http) {
     })
 })
 
+app.controller("comprasCtrl", function($scope, $http) {
+
+    function cargarCompras() {
+        $("#tbodyCompras").html(`
+            <tr>
+                <td colspan="8" class="text-center">
+                    <div class="spinner-border" style="width: 2.5rem; height: 2.5rem;"></div>
+                </td>
+            </tr>
+        `);
+
+        $.get("/compras/listar", function(compras) {
+            let filas = "";
+
+            compras.forEach(c => {
+                filas += `
+                    <tr>
+                        <td>${c.Id_Compra}</td>
+                        <td>${c.Proveedor}</td>
+                        <td>${c.Sucursal}</td>
+                        <td>${c.Nombre_Producto}</td>
+                        <td>${c.Cantidad}</td>
+                        <td>${c.FechaCompra}</td>
+                        <td>${c.Motivo || ""}</td>
+                        <td>
+                            <button class="btn btn-danger btn-eliminar-compra" data-id="${c.Id_Compra}">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            $("#tbodyCompras").html(filas);
+        });
+    }
+
+    cargarCompras();
+
+    // ELIMINAR COMPRA
+    $(document).on("click", ".btn-eliminar-compra", function () {
+        const id = $(this).data("id");
+
+        modal("¿Eliminar esta compra?", "Confirmación", [
+            { html: "No", class: "btn btn-secondary", dismiss: true },
+            {
+                html: "Sí",
+                class: "btn btn-danger while-waiting",
+                defaultButton: true,
+                fun: function () {
+                    $.post("/compras/eliminar", { id: id }, function(res) {
+                        enableAll();
+                        closeModal();
+                        cargarCompras();
+                    });
+                    disableAll();
+                }
+            }
+        ]);
+    });
+
+});
+
 
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
