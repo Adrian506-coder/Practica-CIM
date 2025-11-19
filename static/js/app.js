@@ -896,17 +896,17 @@ $("#txtBuscarSucursal").on("keypress", function(e) {
         $("#btnBuscarSucursal").click();
     }
 });
-    // $(document).on("click", "#tbodyTrajes .btn-eliminar", function(){
-    //     const id = $(this).data("id");
-    //     if(confirm("¿Deseas eliminar este traje?")) {
-    //         $.post("/trajes/eliminar", {id: id}, function(response){
-    //             console.log("Traje eliminado correctamente");
-    //              buscarTrajes()
-    //         }).fail(function(xhr){
-    //             console.error("Error al eliminar traje:", xhr.responseText);
-    //         });
-    //     }
-    // });
+    $(document).on("click", "#tbodySucursal .btn-eliminar", function(){
+        const id = $(this).data("id");
+        if(confirm("¿Deseas eliminar esta sucursal?")) {
+            $.post("/sucursal/eliminar", {id: id}, function(response){
+                console.log("Sucursal eliminada correctamente");
+                 buscarsucursal()
+            }).fail(function(xhr){
+                console.error("Error al eliminar sucursal:", xhr.responseText);
+            });
+        }
+    });
 })
 
 app.controller("inventarioCtrl", function ($scope, $http) {
@@ -1057,6 +1057,7 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
