@@ -600,33 +600,33 @@ def logInventario():
 def compras():
     return render_template("compras.html")
 
-@app.route("/tbodycompra")
-@login
-def tbodycompra():
-    if not con.is_connected():
-        con.reconnect()
+# @app.route("/tbodycompra")
+# @login
+# def tbodycompra():
+#     if not con.is_connected():
+#         con.reconnect()
 
-    cursor = con.cursor(dictionary=True)
-    sql = """
-    SELECT 
-        c.Id_Compra,
-        c.Cantidad,
-        c.FechaCompra,
-        c.Motivo,
-        p.Nombre_Producto,
-        pr.Nombre AS Proveedor,
-        s.Nombre  AS Sucursal
-    FROM compras c
-    JOIN productos   p  ON c.Id_Producto   = p.Id_producto
-    JOIN proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
-    JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
-    """
+#     cursor = con.cursor(dictionary=True)
+#     sql = """
+#     SELECT 
+#         c.Id_Compra,
+#         c.Cantidad,
+#         c.FechaCompra,
+#         c.Motivo,
+#         p.Nombre_Producto,
+#         pr.Nombre AS Proveedor,
+#         s.Nombre  AS Sucursal
+#     FROM compras c
+#     JOIN productos   p  ON c.Id_Producto   = p.Id_producto
+#     JOIN proveedores pr ON c.Id_Proveedor  = pr.Id_Proveedor
+#     JOIN sucursal    s  ON c.Id_Sucursal   = s.Id_sucursal
+#     """
 
-    cursor.execute(sql)
-    registros = cursor.fetchall()
-    cursor.close()
+#     cursor.execute(sql)
+#     registros = cursor.fetchall()
+#     cursor.close()
 
-    return render_template("tbodycompra.html", compras=registros)
+#     return render_template("tbodycompra.html", compras=registros)
 
 @app.route("/compras/listar", methods=["GET"])
 @login
@@ -657,6 +657,7 @@ def compras_eliminar():
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"status": "ok", "mensaje": "Compra eliminada correctamente"})
+
 
 
 
