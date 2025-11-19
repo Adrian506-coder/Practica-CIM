@@ -1024,9 +1024,9 @@ app.controller("inventarioCtrl", function ($scope, $http) {
         });
     });
     
-    $("#txtBuscarSucursal").on("keypress", function(e) {
+    $("#txtBuscarInventario").on("keypress", function(e) {
         if(e.which === 13) {
-            $("#btnBuscarSucursal").click();
+            $("#btnBuscarInventario").click();
         }
     });
     
@@ -1057,6 +1057,7 @@ app.controller("inventarioCtrl", function ($scope, $http) {
 document.addEventListener("DOMContentLoaded", function (event) {
     activeMenuOption(location.hash)
 })
+
 
 
 
