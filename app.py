@@ -40,6 +40,19 @@ def pusherSucursal():
     
     pusher_client.trigger("canalsucursal", "eventosucursal", {"message": "Hola Mundo!"})
 
+# inventario
+def pusherInventario():
+    import pusher
+    
+    pusher_client = pusher.Pusher(
+    app_id="2046017",
+    key="b51b00ad61c8006b2e6f",
+    secret="d2ec35aa5498a18af7bf",
+    cluster="us2",
+    ssl=True
+    )
+    
+    pusher_client.trigger("canalinventario", "eventoinventario", {"message": "Hola Mundo!"})
 
 def login(fun):
     @wraps(fun)
@@ -471,7 +484,7 @@ def guardarinventario():
         """
         cursor.execute(sql, (txtIdsucursal, txtIdproducto, txtExistencia, txtIdinventario))
         
-        pusherSucursal()
+        pusherInventario()
     else: 
         sql = """
         INSERT INTO inventario  (Id_sucursal, Id_producto, Existencias)
@@ -479,7 +492,7 @@ def guardarinventario():
         """
         cursor.execute(sql, (txtIdsucursal, txtIdproducto, txtExistencia))
 
-        pusherSucursal()
+        pusherInventario()
 
     con.commit()
     con.close()
@@ -515,7 +528,7 @@ def eliminarinventario():
         cursor.close()
         con.close()
 
-    pusherSucursal()
+    pusherInventario()
 
     return make_response(jsonify({"status": "ok", "mensaje": "Inventario eliminado correctamente"}))
 
@@ -536,4 +549,5 @@ def logInventario():
         log = f.read()
 
     return log
+
 
